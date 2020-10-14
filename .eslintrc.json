@@ -76,5 +76,21 @@
                 ]
             }
         ]
-    }
+    },
+    "overrides": [
+        {
+          "files": [
+            "**/*.test.js",
+            "**/*.test.jsx"
+          ],
+          "env": {
+            "browser": true,
+            "es2021": true,
+            "jest": true
+          },
+          "rules": {
+            "react/jsx-props-no-spreading": 0
+          }
+        }
+      ]
 }

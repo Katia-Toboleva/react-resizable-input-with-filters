@@ -20,42 +20,45 @@ class RangeInput extends React.Component {
 
   // Events
   // ===================================
-  //add type to set the state and know which button you pressed
-  handleMouseDown() {
+  // add type to set the state and know which button you pressed
+  handleMouseDown(type) {
     this.setState({
       isMouseActive: true,
+      type,
     });
   }
 
   handleMouseUp() {
     this.setState({
       isMouseActive: false,
+      type: '',
     });
   }
 
-  handleMouseMoveLeft(value) {
+  handleMouseMoveLeft(valueX) {
     this.setState({
-      left: value,
+      left: valueX,
     });
   }
 
-  handleMouseMoveRight(value) {
+  handleMouseMoveRight(valueX) {
+    const width = window.innerWidth;
+
     this.setState({
-      right: value,
+      right: width - valueX,
     });
   }
 
-  handleMouseMove() {
-    const { type } = this.props;
-
-    const { isMouseActive } = this.state;
+  handleMouseMove(valueX) {
+    const { isMouseActive, type } = this.state;
+    // console.log(this.state);
 
     if (isMouseActive === true && type === 'left') {
-      this.handleMouseMoveLeft();
+      this.handleMouseMoveLeft(valueX);
     }
 
     if (isMouseActive === true && type === 'right') {
-      this.handleMouseMoveRight();
+      this.handleMouseMoveRight(valueX);
     }
   }
 
@@ -63,22 +66,24 @@ class RangeInput extends React.Component {
   // ===================================
   // add width to Bar
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     const { left, right } = this.state;
     return (
       <div className={styles['range-input']}>
         <Bar left={left} right={right} />
         <Toggle
+          left={left}
           type="left"
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
-          onMouseMove={(value) => this.handleMouseMoveLeft(value)}
+          onMouseMove={(valueX) => this.handleMouseMove(valueX)}
         />
         <Toggle
+          right={right}
           type="right"
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
-          onMouseMove={(value) => this.handleMouseMoveRight(value)}
+          onMouseMove={(valueX) => this.handleMouseMove(valueX)}
         />
       </div>
     );

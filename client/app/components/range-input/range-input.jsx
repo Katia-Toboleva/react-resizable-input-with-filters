@@ -64,7 +64,6 @@ class RangeInput extends React.Component {
 
   // Render
   // ===================================
-  // add width to Bar
   render() {
     // console.log(this.state);
     const { left, right } = this.state;

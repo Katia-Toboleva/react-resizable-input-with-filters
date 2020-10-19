@@ -1,7 +1,9 @@
 import React from 'react';
 
-// const App = () => (
-//   <Header />
-// );
+import RangeInput from './components/range-input';
+
+const App = () => (
+  <RangeInput />
+);
 
 export default App;

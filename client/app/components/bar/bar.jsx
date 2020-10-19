@@ -7,7 +7,7 @@ const Bar = (props) => {
   const barLeftAndRightStyles = {
     left: `${left}px`,
     right: `${right}px`,
-    width: `(window.offsetWidth - (${left} + ${right}))px`,
+    width: `(window.innerWidth - ${left + right})px`,
     minWidth: '10px',
   };
 

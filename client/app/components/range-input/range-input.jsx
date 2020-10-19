@@ -20,7 +20,6 @@ class RangeInput extends React.Component {
 
   // Events
   // ===================================
-  // add type to set the state and know which button you pressed
   handleMouseDown(type) {
     this.setState({
       isMouseActive: true,
@@ -35,31 +34,38 @@ class RangeInput extends React.Component {
     });
   }
 
-  handleMouseMoveLeft(valueX) {
+  handleMouseMoveLeft(event) {
     this.setState({
-      left: valueX,
+      left: event.offsetX,
     });
   }
 
-  handleMouseMoveRight(valueX) {
+  handleMouseMoveRight(event) {
     const width = window.innerWidth;
 
     this.setState({
-      right: width - valueX,
+      right: width - (event.offsetX),
     });
   }
 
-  handleMouseMove(valueX) {
+  handleMouseMove(event) {
     const { isMouseActive, type } = this.state;
-    // console.log(this.state);
 
     if (isMouseActive === true && type === 'left') {
-      this.handleMouseMoveLeft(valueX);
+      this.handleMouseMoveLeft(event);
     }
 
     if (isMouseActive === true && type === 'right') {
-      this.handleMouseMoveRight(valueX);
+      this.handleMouseMoveRight(event);
     }
+  }
+
+  componentDidMount() {
+    window.addEventListener('mousemove', (event) => this.handleMouseMove(event));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', (event) => this.handleMouseMove(event));
   }
 
   // Render
@@ -75,14 +81,12 @@ class RangeInput extends React.Component {
           type="left"
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
-          onMouseMove={(valueX) => this.handleMouseMove(valueX)}
         />
         <Toggle
           right={right}
           type="right"
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
-          onMouseMove={(valueX) => this.handleMouseMove(valueX)}
         />
       </div>
     );

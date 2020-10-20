@@ -3,15 +3,11 @@ import styles from './toggle.scss';
 
 const Toggle = (props) => {
   const {
-    type, onMouseUp, onMouseDown, right, left,
+    type, onMouseDown, right, left,
   } = props;
 
   const handleMouseDown = () => {
     onMouseDown(type);
-  };
-
-  const handleMouseUp = () => {
-    onMouseUp();
   };
 
   const toggleLeftAndRightStyles = {
@@ -25,7 +21,6 @@ const Toggle = (props) => {
       className={styles.toggle}
       style={toggleLeftAndRightStyles}
       onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
     />
   );
 };

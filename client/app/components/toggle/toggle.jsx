@@ -1,5 +1,8 @@
 import React from 'react';
+import classnames from 'classnames/bind';
 import styles from './toggle.scss';
+
+const cx = classnames.bind(styles);
 
 const Toggle = (props) => {
   const {
@@ -18,7 +21,9 @@ const Toggle = (props) => {
   return (
     <div
       type={type}
-      className={styles.toggle}
+      className={cx('toggle', {
+        [`toggle--type-${type}`]: true,
+      })}
       style={toggleLeftAndRightStyles}
       onMouseDown={handleMouseDown}
     />

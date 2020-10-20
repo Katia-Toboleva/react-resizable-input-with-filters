@@ -1,9 +1,17 @@
 .toggle {
   border-radius: 50%;
   background-color: rgb(29, 137, 232);
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   position: absolute;
+  top: 50%;
   cursor: pointer;
-  top: -4px;
+
+  &--type-left {
+    transform: translateY(-50%) translateX(-8px);
+  }
+
+  &--type-right {
+    transform: translateY(-50%) translateX(8px);
+  }
 }

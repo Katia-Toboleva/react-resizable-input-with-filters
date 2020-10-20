@@ -21,30 +21,29 @@ class RangeInput extends React.Component {
     this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
-  componentDidMount() {
-    const nodeRef = this.inputRangeRef.current;
+  // componentDidMount() {
+  //   const nodeRef = this.inputRangeRef.current;
 
-    const className = styles['range-input'];
+  //   const className = styles['range-input'];
 
-    window.setTimeout(() => {
-      const node = document.querySelector(`.${className}`);
+  //   window.setTimeout(() => {
+  //     const node = document.querySelector(`.${className}`);
 
-      console.dir(node);
-    }, 1000);
+  //     console.dir(node);
+  //   }, 1000);
 
-    console.dir(nodeRef);
-  }
+  //   console.dir(nodeRef);
+  // }
 
   // Events
   // ===================================
-  handleMouseDown(type) {
-    window.addEventListener('mousemove', this.handleMouseMove);
-    window.addEventListener('mouseup', this.handleMouseUp);
 
-    this.setState({
-      isMouseActive: true,
-      type,
-    });
+  getPercentage() {
+    const { left, right } = this.state;
+    const bounds = this.inputRangeRef.current.getBoundingClientRect();
+    const selectedWidth = bounds.width - (left + right);
+
+    return (selectedWidth * 100) / bounds.width;
   }
 
   calculatePercentage() {
@@ -55,6 +54,16 @@ class RangeInput extends React.Component {
     const percentage = (selectedArea * 100) / width;
 
     return percentage;
+  }
+
+  handleMouseDown(type) {
+    window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('mouseup', this.handleMouseUp);
+
+    this.setState({
+      isMouseActive: true,
+      type,
+    });
   }
 
   handleMouseUp() {
@@ -115,7 +124,9 @@ class RangeInput extends React.Component {
   }
 
   handleMouseMove(event) {
-    const { isMouseActive, type, left, right } = this.state;
+    const {
+      isMouseActive, type, left, right,
+    } = this.state;
 
     if (isMouseActive && type === 'left') {
       this.handleMouseMoveLeft(event);
@@ -132,14 +143,6 @@ class RangeInput extends React.Component {
     };
 
     this.props.onChange(values);
-  }
-
-  getPercentage() {
-    const { left, right } = this.state;
-    const bounds = this.inputRangeRef.current.getBoundingClientRect();
-    const selectedWidth = bounds.width - (left + right);
-
-    return selectedWidth * 100 / bounds.width;
   }
 
   // Render

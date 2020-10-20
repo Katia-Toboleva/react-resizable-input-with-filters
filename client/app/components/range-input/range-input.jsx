@@ -10,42 +10,60 @@ class RangeInput extends React.Component {
     this.state = {
       isMouseActive: false,
       type: '',
-      left: 0,
-      right: 0,
+      left: 8,
+      right: 8,
     };
 
+    this.inputRangeRef = React.createRef();
+
     this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
+  }
+
+  componentDidMount() {
+    const nodeRef = this.inputRangeRef.current;
+
+    const className = styles['range-input'];
+
+    window.setTimeout(() => {
+      const node = document.querySelector(`.${className}`);
+
+      console.dir(node);
+    }, 1000);
+
+    console.dir(nodeRef);
   }
 
   // Events
   // ===================================
-
-  componentDidMount() {
-    window.addEventListener('mousemove', (event) => this.handleMouseMove(event));
-    window.addEventListener('mouseup', (event) => this.handleMouseUp(event));
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('mousemove', (event) => this.handleMouseMove(event));
-    window.addEventListener('mouseup', (event) => this.handleMouseUp(event));
-  }
-
   handleMouseDown(type) {
+    window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('mouseup', this.handleMouseUp);
+
     this.setState({
       isMouseActive: true,
       type,
     });
   }
 
-  handleMouseUp(event) {
+  calculatePercentage() {
+    const { left, right } = this.state;
+    const { width } = this.inputRangeRef.current.getBoundingClientRect();
+    const selectedArea = width - ((left + right) - 16);
+
+    const percentage = (selectedArea * 100) / width;
+
+    return percentage;
+  }
+
+  handleMouseUp() {
     const { type } = this.state;
 
     if (type === 'left') {
       this.setState({
         isMouseActive: false,
         type: '',
-        left: event.offsetX,
       });
     }
 
@@ -53,35 +71,75 @@ class RangeInput extends React.Component {
       this.setState({
         isMouseActive: false,
         type: '',
-        right: event.offsetX,
       });
     }
+
+    window.removeEventListener('mousemove', this.handleMouseMove);
+    window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
   handleMouseMoveLeft(event) {
+    const { right } = this.state;
+    const bounds = this.inputRangeRef.current.getBoundingClientRect();
+    const value = event.clientX - bounds.left;
+
+    if (value <= 8 || value >= bounds.width - 20) {
+      return;
+    }
+
+    if ((value + right + 16) >= bounds.width) {
+      return;
+    }
+
     this.setState({
-      left: event.offsetX,
+      left: value,
     });
   }
 
   handleMouseMoveRight(event) {
-    const width = window.innerWidth;
+    const { left } = this.state;
+    const bounds = this.inputRangeRef.current.getBoundingClientRect();
+    const value = (event.clientX - (bounds.left + bounds.width)) * -1;
+
+    if (value <= 8 || value >= bounds.width - 20) {
+      return;
+    }
+
+    if ((value + left + 16) >= bounds.width) {
+      return;
+    }
 
     this.setState({
-      right: width - (event.offsetX),
+      right: value,
     });
   }
 
   handleMouseMove(event) {
-    const { isMouseActive, type } = this.state;
+    const { isMouseActive, type, left, right } = this.state;
 
-    if (isMouseActive === true && type === 'left') {
+    if (isMouseActive && type === 'left') {
       this.handleMouseMoveLeft(event);
     }
 
-    if (isMouseActive === true && type === 'right') {
+    if (isMouseActive && type === 'right') {
       this.handleMouseMoveRight(event);
     }
+
+    const values = {
+      left,
+      right,
+      percentage: this.getPercentage(),
+    };
+
+    this.props.onChange(values);
+  }
+
+  getPercentage() {
+    const { left, right } = this.state;
+    const bounds = this.inputRangeRef.current.getBoundingClientRect();
+    const selectedWidth = bounds.width - (left + right);
+
+    return selectedWidth * 100 / bounds.width;
   }
 
   // Render
@@ -90,7 +148,7 @@ class RangeInput extends React.Component {
     // console.log(this.state);
     const { left, right } = this.state;
     return (
-      <div className={styles['range-input']}>
+      <div className={styles['range-input']} ref={this.inputRangeRef}>
         <Bar left={left} right={right} />
         <Toggle
           left={left}

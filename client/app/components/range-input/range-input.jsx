@@ -130,14 +130,14 @@ class RangeInput extends React.Component {
     if (left <= 0) {
       this.setState({
         left: 0,
-        right: width - selectedArea - 16,
+        right: width - selectedArea,
       });
     }
 
     if (right <= 0) {
       this.setState({
         right: 0,
-        left: selectedArea,
+        left: width - selectedArea,
       });
     }
 

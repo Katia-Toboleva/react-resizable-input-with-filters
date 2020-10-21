@@ -12,7 +12,7 @@ class RangeInput extends React.Component {
       type: '',
       left: 8,
       right: 8,
-      width: 100,
+      width: 98,
     };
 
     this.inputRangeRef = React.createRef();

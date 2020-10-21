@@ -72,13 +72,9 @@ class RangeInput extends React.Component {
     }
 
     if (type === 'bar') {
-      const { left, right, x1, x2 } = this.state;
-      const distance = x1-x2;
       this.setState({
         isMouseActive: false,
         type: '',
-        left: left - distance,
-        right: right + distance,
       });
     }
 
@@ -125,9 +121,30 @@ class RangeInput extends React.Component {
   }
 
   handleBarMove(event) {
-    this.setState({
-      x2: event.clientX,
-    });
+
+    const { left, right } = this.state;
+    const { width } = this.inputRangeRef.current.getBoundingClientRect();
+    const selectedArea = width - (left + right);
+    console.log(selectedArea, width);
+
+    if (left <= 0) {
+      this.setState({
+        left: 0,
+        right: width - selectedArea - 16,
+      });
+    }
+
+    if (right <= 0) {
+      this.setState({
+        right: 0,
+        left: selectedArea,
+      });
+    }
+
+    this.setState((state) => ({
+      left: state.left + event.movementX,
+      right: state.right - event.movementX,
+    }));
   }
 
   handleMouseMove(event) {
@@ -156,14 +173,13 @@ class RangeInput extends React.Component {
     this.props.onChange(values);
   }
 
-  handleBarMouseDown(type, x1) {
+  handleBarMouseDown(type) {
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('mouseup', this.handleMouseUp);
 
     this.setState({
       isMouseActive: true,
       type,
-      x1,
     });
   }
 

@@ -16,9 +16,8 @@ const Bar = (props) => {
     width: `${width}%`,
   };
 
-  const handleMouseDown = (event) => {
-    const x1 = event.clientX;
-    onMouseDown(type, x1);
+  const handleMouseDown = () => {
+    onMouseDown(type);
   };
 
   return (

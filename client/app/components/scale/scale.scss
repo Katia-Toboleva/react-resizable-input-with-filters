@@ -1,0 +1,16 @@
+.scale {
+  width: 99%;
+  height: 5px;
+  display: flex;
+  margin: 5px;
+  border-left: 2px solid  rgb(29, 137, 232);
+  border-right: 2px solid  rgb(29, 137, 232);
+
+  &__item:not(:last-of-type) {
+    border-right: 2px solid  rgb(29, 137, 232);
+  }
+
+  &__item {
+    width: 10%;
+  }
+}

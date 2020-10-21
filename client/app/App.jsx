@@ -10,15 +10,13 @@ const App = () => {
     setValues(values);
   };
 
-  console.log(values);
-
   return (
     <>
       <RangeInput onChange={handleChange} />
       <Scale />
 
       {Object.entries(values).map(([key, value]) => (
-        <div>
+        <div key={key}>
           {key}
           :
           {' '}

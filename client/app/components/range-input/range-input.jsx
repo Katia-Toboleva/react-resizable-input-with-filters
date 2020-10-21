@@ -121,7 +121,6 @@ class RangeInput extends React.Component {
   }
 
   handleBarMove(event) {
-
     const { left, right } = this.state;
     const { width } = this.inputRangeRef.current.getBoundingClientRect();
     const selectedArea = width - (left + right);

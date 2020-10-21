@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import RangeInput from './components/range-input';
+import Scale from './components/scale';
 
 const App = () => {
   const [values, setValues] = useState({});
@@ -16,6 +17,7 @@ const App = () => {
   return (
     <>
       <RangeInput onChange={handleChange} />
+      <Scale />
 
       {Object.entries(values).map(([key, value]) => {
         return (

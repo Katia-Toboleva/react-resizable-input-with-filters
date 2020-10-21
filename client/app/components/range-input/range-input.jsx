@@ -31,7 +31,7 @@ class RangeInput extends React.Component {
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const selectedWidth = bounds.width - (left + right);
 
-    return Math.floor((selectedWidth * 100) / bounds.width);
+    return Math.round((selectedWidth * 100) / bounds.width);
   }
 
   calculatePercentage() {

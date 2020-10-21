@@ -12,6 +12,7 @@ class RangeInput extends React.Component {
       type: '',
       left: 8,
       right: 8,
+      width: 100,
     };
 
     this.inputRangeRef = React.createRef();
@@ -19,21 +20,8 @@ class RangeInput extends React.Component {
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
+    this.handleBarMouseDown = this.handleBarMouseDown.bind(this);
   }
-
-  // componentDidMount() {
-  //   const nodeRef = this.inputRangeRef.current;
-
-  //   const className = styles['range-input'];
-
-  //   window.setTimeout(() => {
-  //     const node = document.querySelector(`.${className}`);
-
-  //     console.dir(node);
-  //   }, 1000);
-
-  //   console.dir(nodeRef);
-  // }
 
   // Events
   // ===================================
@@ -83,6 +71,13 @@ class RangeInput extends React.Component {
       });
     }
 
+    if (type === 'bar') {
+      this.setState({
+        isMouseActive: false,
+        type: '',
+      });
+    }
+
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
@@ -102,6 +97,7 @@ class RangeInput extends React.Component {
 
     this.setState({
       left: value,
+      width: this.getPercentage(),
     });
   }
 
@@ -120,6 +116,18 @@ class RangeInput extends React.Component {
 
     this.setState({
       right: value,
+      width: this.getPercentage(),
+    });
+  }
+
+  handleBarMove(event) {
+    const bounds = this.inputRangeRef.current.getBoundingClientRect();
+    const valueLeft = event.clientX - bounds.left;
+    // const valueRight = (event.clientX - (bounds.right + bounds.width)) * -1;
+
+    this.setState({
+      left: valueLeft,
+      // right: valueRight,
     });
   }
 
@@ -136,6 +144,10 @@ class RangeInput extends React.Component {
       this.handleMouseMoveRight(event);
     }
 
+    if (isMouseActive && type === 'bar') {
+      this.handleBarMove(event);
+    }
+
     const values = {
       left,
       right,
@@ -145,14 +157,24 @@ class RangeInput extends React.Component {
     this.props.onChange(values);
   }
 
+  handleBarMouseDown(type) {
+    window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('mouseup', this.handleMouseUp);
+
+    this.setState({
+      isMouseActive: true,
+      type,
+    });
+  }
+
   // Render
   // ===================================
   render() {
-    // console.log(this.state);
-    const { left, right } = this.state;
+    console.log(this.state);
+    const { left, right, width } = this.state;
     return (
       <div className={styles['range-input']} ref={this.inputRangeRef}>
-        <Bar left={left} right={right} />
+        <Bar left={left} right={right} type="bar" width={width} onMouseDown={this.handleBarMouseDown} />
         <Toggle
           left={left}
           type="left"

@@ -7,10 +7,8 @@ const App = () => {
   const [values, setValues] = useState({});
 
   const handleChange = (values) => {
-
     setValues(values);
   };
-
 
   console.log(values);
 
@@ -19,13 +17,16 @@ const App = () => {
       <RangeInput onChange={handleChange} />
       <Scale />
 
-      {Object.entries(values).map(([key, value]) => {
-        return (
-          <div>{key}: {value}</div>
-        )
-      })}
+      {Object.entries(values).map(([key, value]) => (
+        <div>
+          {key}
+          :
+          {' '}
+          {value}
+        </div>
+      ))}
     </>
-  )
+  );
 };
 
 export default App;

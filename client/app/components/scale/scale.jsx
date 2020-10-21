@@ -8,8 +8,8 @@ const arr = [
 ];
 
 const stylesScale = {
-  width: `${100 /arr.length}%`,
-}
+  width: `${100 / arr.length}%`,
+};
 
 const Scale = () => (
 

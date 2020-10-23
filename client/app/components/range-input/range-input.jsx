@@ -75,12 +75,19 @@ class RangeInput extends React.Component {
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
+  handleMagnet(percentage) {
+    const { spaces } = this.props;
+    const step = 100 / spaces;
+    const rounded = (Math.round(percentage / step)) * step;
+    return rounded;
+  }
+
   handleMouseMoveLeft(event) {
     const { right } = this.state;
     const { width, left } = this.inputRangeRef.current.getBoundingClientRect();
     const value = event.clientX - left;
     const percentage = this.calculatePercentage(value, width);
-    console.log(value, percentage, window.innerWidth, event.clientX, left);
+    const magnetValue = this.handleMagnet(percentage);
 
     if (percentage <= 0 || percentage > 100) {
       return;
@@ -91,8 +98,8 @@ class RangeInput extends React.Component {
     }
 
     this.setState({
-      left: percentage,
-      width: 100 - (percentage + right),
+      left: magnetValue,
+      width: 100 - (magnetValue + right),
     });
   }
 
@@ -101,6 +108,7 @@ class RangeInput extends React.Component {
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const value = (event.clientX - (bounds.left + bounds.width)) * -1;
     const percentage = this.calculatePercentage(value, bounds.width);
+    const magnetValue = this.handleMagnet(percentage);
 
     if (percentage <= 0 || percentage > 100) {
       return;
@@ -111,13 +119,19 @@ class RangeInput extends React.Component {
     }
 
     this.setState({
-      right: percentage,
-      width: 100 - (percentage + left),
+      right: magnetValue,
+      width: 100 - (magnetValue + left),
     });
   }
 
   handleBarMove(event) {
     const { left, right, width } = this.state;
+    const { spaces } = this.props;
+    const space = 100 / spaces;
+    const bounds = this.inputRangeRef.current.getBoundingClientRect();
+    const mouseMove = (event.movementX * 100) / bounds.width;
+    console.log(mouseMove);
+
 
     if (left <= 0) {
       this.setState({
@@ -134,8 +148,8 @@ class RangeInput extends React.Component {
     }
 
     this.setState((state) => ({
-      left: state.left + (event.movementX * 100) / window.innerWidth,
-      right: state.right - (event.movementX * 100) / window.innerWidth,
+      left: state.left + mouseMove,
+      right: state.right - mouseMove,
     }));
   }
 

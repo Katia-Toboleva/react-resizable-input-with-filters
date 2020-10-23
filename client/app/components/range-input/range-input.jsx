@@ -127,29 +127,28 @@ class RangeInput extends React.Component {
   handleBarMove(event) {
     const { left, right, width } = this.state;
     const { spaces } = this.props;
-    const space = 100 / spaces;
+    const step = 100 / spaces;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
-    const mouseMove = (event.movementX * 100) / bounds.width;
-    console.log(mouseMove);
+    const rounded = ((Math.round(((event.clientX - bounds.left) * 100 / bounds.width) / step)) * step);
+    console.log(left, right, width, rounded);
 
-
-    if (left <= 0) {
+    if (left <= 0 || rounded <= 0) {
       this.setState({
         left: 0,
         right: 100 - width,
       });
     }
 
-    if (right <= 0) {
+    if (right <= 0 || rounded <= 0) {
       this.setState({
         right: 0,
         left: 100 - width,
       });
     }
 
-    this.setState((state) => ({
-      left: state.left + mouseMove,
-      right: state.right - mouseMove,
+    this.setState(() => ({
+      left: rounded - step,
+      right: 100 - width - left,
     }));
   }
 
@@ -171,9 +170,9 @@ class RangeInput extends React.Component {
     }
 
     const values = {
-      left,
-      right,
-      percentage: this.getPercentage(),
+      left: Math.round(left),
+      right: Math.round(right),
+      percentage: Math.round(this.getPercentage()),
     };
 
     this.props.onChange(values);

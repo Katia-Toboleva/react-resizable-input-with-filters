@@ -11,8 +11,8 @@ const Bar = (props) => {
   } = props;
 
   const barLeftAndRightStyles = {
-    left: `${left}px`,
-    right: `${right}px`,
+    left: `${left}%`,
+    right: `${right}%`,
     width: `${width}%`,
   };
 

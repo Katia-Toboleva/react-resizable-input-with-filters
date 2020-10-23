@@ -129,8 +129,12 @@ class RangeInput extends React.Component {
     const { spaces } = this.props;
     const step = 100 / spaces;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
-    const rounded = ((Math.round(((event.clientX - bounds.left) * 100 / bounds.width) / step)) * step);
-    console.log(left, right, width, rounded);
+    const rounded = (
+      (Math.round(
+        (((event.clientX - bounds.left) * 100) / bounds.width)
+        / step,
+      )) * step
+    );
 
     if (left <= 0 || rounded <= 0) {
       this.setState({

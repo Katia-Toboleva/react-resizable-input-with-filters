@@ -1,13 +1,20 @@
 .scale {
-  width: 99%;
-  height: 5px;
+  width: 100%;
   display: flex;
-  margin: 5px 3px;
-  border-left: 2px solid  rgb(29, 137, 232);
   border-right: 2px solid  rgb(29, 137, 232);
 
-  &__item:not(:last-of-type) {
-    border-right: 2px solid  rgb(29, 137, 232);
+  &__item {
+    position: relative;
+    height: 10px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -1;
+      width: 2px;
+      height: 100%;
+      background-color: rgb(29, 137, 232);
+    }
   }
 
 }

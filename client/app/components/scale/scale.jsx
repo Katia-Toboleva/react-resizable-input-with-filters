@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './scale.scss';
 
 const getStyles = (spaces) => ({
-  width: `${100/spaces}%`,
+  width: `${100 / spaces}%`,
 });
 
 const Scale = (props) => {

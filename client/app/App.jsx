@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import RangeInput from './components/range-input';
 
-
 const App = () => {
   const [values, setValues] = useState({});
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Toggle from '../toggle';
 import Bar from '../bar';
+import Scale from '../scale';
 import styles from './range-input.scss';
 
 class RangeInput extends React.Component {
@@ -10,9 +11,9 @@ class RangeInput extends React.Component {
     this.state = {
       isMouseActive: false,
       type: '',
-      left: 8,
-      right: 8,
-      width: 98,
+      left: 0,
+      right: 0,
+      width: 100,
     };
 
     this.inputRangeRef = React.createRef();
@@ -28,20 +29,12 @@ class RangeInput extends React.Component {
 
   getPercentage() {
     const { left, right } = this.state;
-    const bounds = this.inputRangeRef.current.getBoundingClientRect();
-    const selectedWidth = bounds.width - (left + right);
-
-    return Math.round((selectedWidth * 100) / bounds.width);
+    const selectedWidth = 100 - (left + right);
+    return selectedWidth;
   }
 
-  calculatePercentage() {
-    const { left, right } = this.state;
-    const { width } = this.inputRangeRef.current.getBoundingClientRect();
-    const selectedArea = width - ((left + right) - 16);
-
-    const percentage = (selectedArea * 100) / width;
-
-    return percentage;
+  calculatePercentage(value, width) {
+    return (value * 100) / (width);
   }
 
   handleMouseDown(type) {
@@ -84,20 +77,22 @@ class RangeInput extends React.Component {
 
   handleMouseMoveLeft(event) {
     const { right } = this.state;
-    const bounds = this.inputRangeRef.current.getBoundingClientRect();
-    const value = event.clientX - bounds.left;
+    const { width, left } = this.inputRangeRef.current.getBoundingClientRect();
+    const value = event.clientX - left;
+    const percentage = this.calculatePercentage(value, width);
+    console.log(value, percentage, window.innerWidth, event.clientX, left);
 
-    if (value <= 8 || value >= bounds.width - 20) {
+    if (percentage <= 0 || percentage > 100) {
       return;
     }
 
-    if ((value + right + 16) >= bounds.width) {
+    if ((percentage + right) >= 100) {
       return;
     }
 
     this.setState({
-      left: value,
-      width: this.getPercentage(),
+      left: percentage,
+      width: 100 - (percentage + right),
     });
   }
 
@@ -105,43 +100,42 @@ class RangeInput extends React.Component {
     const { left } = this.state;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const value = (event.clientX - (bounds.left + bounds.width)) * -1;
+    const percentage = this.calculatePercentage(value, bounds.width);
 
-    if (value <= 8 || value >= bounds.width - 20) {
+    if (percentage <= 0 || percentage > 100) {
       return;
     }
 
-    if ((value + left + 16) >= bounds.width) {
+    if ((percentage + left) >= 100) {
       return;
     }
 
     this.setState({
-      right: value,
-      width: this.getPercentage(),
+      right: percentage,
+      width: 100 - (percentage + left),
     });
   }
 
   handleBarMove(event) {
-    const { left, right } = this.state;
-    const { width } = this.inputRangeRef.current.getBoundingClientRect();
-    const selectedArea = width - (left + right);
+    const { left, right, width } = this.state;
 
     if (left <= 0) {
       this.setState({
         left: 0,
-        right: width - selectedArea,
+        right: 100 - width,
       });
     }
 
     if (right <= 0) {
       this.setState({
         right: 0,
-        left: width - selectedArea,
+        left: 100 - width,
       });
     }
 
     this.setState((state) => ({
-      left: state.left + event.movementX,
-      right: state.right - event.movementX,
+      left: state.left + (event.movementX * 100) / window.innerWidth,
+      right: state.right - (event.movementX * 100) / window.innerWidth,
     }));
   }
 
@@ -186,6 +180,7 @@ class RangeInput extends React.Component {
   render() {
     // console.log(this.state);
     const { left, right, width } = this.state;
+    const { spaces } = this.props;
     return (
       <div className={styles['range-input']} ref={this.inputRangeRef}>
         <Bar left={left} right={right} type="bar" width={width} onMouseDown={this.handleBarMouseDown} />
@@ -199,6 +194,8 @@ class RangeInput extends React.Component {
           type="right"
           onMouseDown={this.handleMouseDown}
         />
+        <br />
+        <Scale spaces={spaces} />
       </div>
     );
   }

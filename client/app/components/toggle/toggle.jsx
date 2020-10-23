@@ -14,8 +14,8 @@ const Toggle = (props) => {
   };
 
   const toggleLeftAndRightStyles = {
-    left: `${left}px`,
-    right: `${right}px`,
+    left: `${left}%`,
+    right: `${right}%`,
   };
 
   return (

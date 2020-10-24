@@ -14,6 +14,7 @@ class RangeInput extends React.Component {
       left: 0,
       right: 0,
       width: 100,
+      mouseDistance: 0,
     };
 
     this.inputRangeRef = React.createRef();
@@ -68,6 +69,7 @@ class RangeInput extends React.Component {
       this.setState({
         isMouseActive: false,
         type: '',
+        mouseDistance: 0,
       });
     }
 
@@ -75,19 +77,20 @@ class RangeInput extends React.Component {
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
-  handleMagnet(percentage) {
+  getMagnetValue(percentage) {
     const { spaces } = this.props;
     const step = 100 / spaces;
     const rounded = (Math.round(percentage / step)) * step;
+
     return rounded;
   }
 
-  handleMouseMoveLeft(event) {
+  handleToggleLeftMove(event) {
     const { right } = this.state;
     const { width, left } = this.inputRangeRef.current.getBoundingClientRect();
     const value = event.clientX - left;
     const percentage = this.calculatePercentage(value, width);
-    const magnetValue = this.handleMagnet(percentage);
+    const magnetValue = this.getMagnetValue(percentage);
 
     if (percentage <= 0 || percentage > 100) {
       return;
@@ -103,12 +106,12 @@ class RangeInput extends React.Component {
     });
   }
 
-  handleMouseMoveRight(event) {
+  handleToggleRightMove(event) {
     const { left } = this.state;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const value = (event.clientX - (bounds.left + bounds.width)) * -1;
     const percentage = this.calculatePercentage(value, bounds.width);
-    const magnetValue = this.handleMagnet(percentage);
+    const magnetValue = this.getMagnetValue(percentage);
 
     if (percentage <= 0 || percentage > 100) {
       return;
@@ -125,35 +128,26 @@ class RangeInput extends React.Component {
   }
 
   handleBarMove(event) {
-    const { left, right, width } = this.state;
+    const { width, mouseDistance } = this.state;
     const { spaces } = this.props;
     const step = 100 / spaces;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
-    const rounded = (
-      (Math.round(
-        (((event.clientX - bounds.left) * 100) / bounds.width)
-        / step,
-      )) * step
-    );
+    const mousePosition = (event.clientX - bounds.left) * 100 / bounds.width;
+    const rounded = Math.round(mousePosition / step) * step;
+    const newLeft = rounded - step;
+    const newRight = 100 - width - newLeft;
+    const newMouseDistance = mouseDistance + event.movementX;
+    const mouseDistanceInPercentage = mouseDistance / bounds.width * 100;
 
-    if (left <= 0 || rounded <= 0) {
-      this.setState(() => ({
-        left: 0,
-        right: 100 - width,
-      }));
+    if (newLeft < 0 || newRight < 0) {
+      return;
     }
 
-    if (right <= 0 || rounded <= 0) {
-      this.setState(() => ({
-        right: 0,
-        left: 100 - width,
-      }));
-    }
-
-    this.setState(() => ({
-      left: rounded - step,
-      right: 100 - width - left,
-    }));
+    this.setState({
+      left: newLeft,
+      right: newRight,
+      mouseDistance: newMouseDistance,
+    });
   }
 
   handleMouseMove(event) {
@@ -161,12 +155,14 @@ class RangeInput extends React.Component {
       isMouseActive, type, left, right,
     } = this.state;
 
+    console.log(this.state);
+
     if (isMouseActive && type === 'left') {
-      this.handleMouseMoveLeft(event);
+      this.handleToggleLeftMove(event);
     }
 
     if (isMouseActive && type === 'right') {
-      this.handleMouseMoveRight(event);
+      this.handleToggleRightMove(event);
     }
 
     if (isMouseActive && type === 'bar') {
@@ -189,6 +185,7 @@ class RangeInput extends React.Component {
     this.setState({
       isMouseActive: true,
       type,
+      mouseDistance: 0,
     });
   }
 

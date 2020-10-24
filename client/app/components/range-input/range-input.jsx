@@ -123,7 +123,7 @@ class RangeInput extends React.Component {
       width: 100 - (magnetValue + left),
     });
   }
-  
+
   handleBarMove(event) {
     const { left, right, width } = this.state;
     const { spaces } = this.props;
@@ -139,7 +139,7 @@ class RangeInput extends React.Component {
     if (left <= 0 || rounded <= 0) {
       this.setState(() => ({
         left: 0,
-        right: 100 - state.width,
+        right: 100 - width,
       }));
     }
 

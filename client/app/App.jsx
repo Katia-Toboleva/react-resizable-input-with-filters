@@ -14,14 +14,10 @@ const App = () => {
       <br />
       <br />
 
-      {Object.entries(values).map(([key, value]) => (
-        <div key={key}>
-          {key}
-          :
-          {' '}
-          {value}
-        </div>
-      ))}
+      {/* <input type='text' value={values.left} />
+      <input type='text' value={100 - values.right} /> */}
+
+      {/* <Products /> */}
     </>
   );
 };

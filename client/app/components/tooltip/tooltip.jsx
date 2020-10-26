@@ -23,7 +23,7 @@ const Tooltip = (props) => {
       })}
       style={tooltipStyles}
     >
-      <span className={styles.['tooltip__text']}>
+      <span className={styles['tooltip__text']}>
         {text}
       </span>
     </div>

@@ -6,4 +6,24 @@
   left: 0;
   transform: translateY(-50%);
   cursor: pointer;
+
+  &--gradient-blue-red {
+    background-image: linear-gradient(90deg, blue, red);
+  }
+
+  &--gradient-green-yellow {
+    background-image: linear-gradient(90deg, green, yellow);
+  }
+
+  &--gradient-orange-red {
+    background-image: linear-gradient(90deg, orange, red);
+  }
+
+  &--gradient-purple-pink {
+    background-image: linear-gradient(90deg, purple, rgb(253, 141, 159));
+  }
+
+  &--gradient-yellow-blue {
+    background-image: linear-gradient(90deg, yellow, blue);
+  }
 }

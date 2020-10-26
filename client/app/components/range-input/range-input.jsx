@@ -128,24 +128,44 @@ class RangeInput extends React.Component {
   }
 
   handleBarMove(event) {
-    const { width, mouseDistance } = this.state;
+    const { width, mouseDistance, left } = this.state;
     const { spaces } = this.props;
     const step = 100 / spaces;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
-    const mousePosition = (event.clientX - bounds.left) * 100 / bounds.width;
-    const rounded = Math.round(mousePosition / step) * step;
-    const newLeft = rounded - step;
-    const newRight = 100 - width - newLeft;
+    // const mousePosition = (event.clientX - bounds.left) * 100 / bounds.width;
+    // const rounded = Math.round(mousePosition / step) * step;
+    // const newLeft = rounded - step;
+    const newLeftRight = left + step;
+    const newLeftLeft = left - step;
+    const newRightRight = 100 - width - newLeftRight;
+    const newRightLeft = 100 - width - newLeftLeft;
     const newMouseDistance = mouseDistance + event.movementX;
-    const mouseDistanceInPercentage = mouseDistance / bounds.width * 100;
+    const mouseDistanceInPercentage = Number((mouseDistance / bounds.width * 100).toFixed(1));
+    const changeLimit = (step / 2) + 0.9;
+    const numberOfSteps = Math.floor(mouseDistanceInPercentage / changeLimit);
+    console.log(mouseDistanceInPercentage, changeLimit, mouseDistance);
 
-    if (newLeft < 0 || newRight < 0) {
+    if (newLeftLeft < 0 || newRightRight < 0) {
       return;
     }
 
+    if (mouseDistanceInPercentage === changeLimit && mouseDistanceInPercentage > 0) {
+      console.log('working!');
+      this.setState({
+        left: newLeftRight,
+        right: newRightRight,
+      })
+    }
+
+    if (Math.abs(mouseDistanceInPercentage) === changeLimit && mouseDistanceInPercentage < 0) {
+      console.log('working!');
+      this.setState({
+        left: newLeftLeft,
+        right: newRightLeft,
+      })
+    }
+
     this.setState({
-      left: newLeft,
-      right: newRight,
       mouseDistance: newMouseDistance,
     });
   }

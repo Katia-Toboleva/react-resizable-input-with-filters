@@ -109,8 +109,8 @@ class RangeInput extends React.Component {
     }
 
     this.setState({
-      left: newLeft,
-      width: 100 - (newLeft + right),
+      left: Math.round(newLeft),
+      width: Math.round(100 - (newLeft + right)),
     });
   }
 
@@ -135,8 +135,8 @@ class RangeInput extends React.Component {
     }
 
     this.setState({
-      right: newRight,
-      width: 100 - (newRight + left),
+      right: Math.round(newRight),
+      width: Math.round(100 - (newRight + left)),
     });
   }
 
@@ -168,8 +168,8 @@ class RangeInput extends React.Component {
 
     this.setState({
       mouseDistance: newMouseDistance,
-      left: newLeftPosition,
-      right: newRightPosition,
+      left: Math.round(newLeftPosition),
+      right: Math.round(newRightPosition),
     });
   }
 
@@ -241,6 +241,13 @@ class RangeInput extends React.Component {
         />
         <br />
         <Scale spaces={spaces} />
+        <br />
+
+        <div className={styles['range-input__values']}>
+          <input type='text' value={left} className={styles['range-input__values-field']} />
+          <input type='text' value={100 - right} className={styles['range-input__values-field']} />
+        </div>
+
       </div>
     );
   }

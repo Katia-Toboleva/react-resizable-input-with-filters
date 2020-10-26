@@ -17,7 +17,6 @@ const Bar = (props) => {
     left: `${left}%`,
     right: `${right}%`,
     width: `${width}%`,
-    // background: `linear-gradient(90deg, rgb(2${left}, 1${left}, ${left}), rgb(${right}, 1${right}, 2${right}))`,
   };
 
   const handleMouseDown = () => {

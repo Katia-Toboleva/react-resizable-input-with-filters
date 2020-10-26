@@ -15,6 +15,7 @@ class RangeInput extends React.Component {
       lastLeftPosition: 0,
       right: 0,
       width: 100,
+      isThreesholdReached: false,
       mouseDistance: 0,
     };
 
@@ -141,14 +142,14 @@ class RangeInput extends React.Component {
 
   handleBarMove(event) {
     const { width, mouseDistance, lastLeftPosition } = this.state;
-    const { spaces } = this.props;
+    const { spaces, stick } = this.props;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
-    // const step = 100 / spaces;
+    const spaceWidth = 100 / spaces;
     // const mousePosition = ((event.clientX - bounds.left) * 100) / bounds.width;
     const newMouseDistance = mouseDistance + event.movementX;
     const mouseDistanceInPercentage = (newMouseDistance / bounds.width) * 100;
-    const newLeftPosition = lastLeftPosition + mouseDistanceInPercentage;
-    const newRightPosition = 100 - width - newLeftPosition;
+    let newLeftPosition = lastLeftPosition + mouseDistanceInPercentage;
+    let newRightPosition = 100 - width - newLeftPosition;
 
     const isExceedingThresholds = (
       newLeftPosition < 0 ||
@@ -159,6 +160,11 @@ class RangeInput extends React.Component {
 
     if (isExceedingThresholds) {
       return;
+    }
+
+    if (stick) {
+      newLeftPosition = Math.round(newLeftPosition / spaceWidth) * spaceWidth;
+      newRightPosition = Math.round(newRightPosition / spaceWidth) * spaceWidth;
     }
 
     this.setState({

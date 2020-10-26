@@ -10,7 +10,7 @@ const App = () => {
 
   return (
     <>
-      <RangeInput onChange={handleChange} spaces={10} />
+      <RangeInput onChange={handleChange} spaces={10} stick />
       <br />
       <br />
 

@@ -15,7 +15,6 @@ class RangeInput extends React.Component {
       lastLeftPosition: 0,
       right: 0,
       width: 100,
-      isThreesholdReached: false,
       mouseDistance: 0,
     };
 
@@ -36,18 +35,16 @@ class RangeInput extends React.Component {
     return selectedWidth;
   }
 
-  calculatePercentage(value, width) {
-    return (value * 100) / (width);
+  getMagnetValue(percentage) {
+    const { spaces } = this.props;
+    const step = 100 / spaces;
+    const rounded = (Math.round(percentage / step)) * step;
+
+    return rounded;
   }
 
-  handleMouseDown(type) {
-    window.addEventListener('mousemove', this.handleMouseMove);
-    window.addEventListener('mouseup', this.handleMouseUp);
-
-    this.setState({
-      isMouseActive: true,
-      type,
-    });
+  calculatePercentage(value, width) {
+    return (value * 100) / (width);
   }
 
   handleMouseUp() {
@@ -80,12 +77,14 @@ class RangeInput extends React.Component {
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
-  getMagnetValue(percentage) {
-    const { spaces } = this.props;
-    const step = 100 / spaces;
-    const rounded = (Math.round(percentage / step)) * step;
+  handleMouseDown(type) {
+    window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('mouseup', this.handleMouseUp);
 
-    return rounded;
+    this.setState({
+      isMouseActive: true,
+      type,
+    });
   }
 
   handleToggleLeftMove(event) {
@@ -145,7 +144,6 @@ class RangeInput extends React.Component {
     const { spaces, sticky } = this.props;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const spaceWidth = 100 / spaces;
-    // const mousePosition = ((event.clientX - bounds.left) * 100) / bounds.width;
     const newMouseDistance = mouseDistance + event.movementX;
     const mouseDistanceInPercentage = (newMouseDistance / bounds.width) * 100;
     let newLeftPosition = lastLeftPosition + mouseDistanceInPercentage;
@@ -172,48 +170,6 @@ class RangeInput extends React.Component {
       left: newLeftPosition,
       right: newRightPosition,
     });
-
-    // console.log(mouseDistanceInPercentage);
-
-    // const rounded = Math.round(mousePosition / step) * step;
-    // const newLeft = rounded - step;
-    // const changeLimit = (step / 2) + 0.9;
-
-    // const nextStep = left + step;
-    // const previousStep = left - step;
-
-    // const nextStepPercentage = 100 - width - nextStep;
-    // const previousStepPercentage = 100 - width - previousStep;
-    // const numberOfSteps = Math.floor(mouseDistanceInPercentage / changeLimit);
-    // console.log(newMouseDistance);
-
-    // if (newLeftPosition < 0 || newRightPosition < 0) {
-    //   return;
-    // }
-
-    // this.setState({
-    //   mouseDistance: newMouseDistance,
-    //   left: newLeftPosition,
-    //   right: newRightPosition,
-    // });
-
-    // if (mouseDistanceInPercentage === changeLimit && mouseDistanceInPercentage > 0) {
-    //   console.log('aaaa');
-
-    //   newState = {
-    //     left: newLeftRight,
-    //     right: newRightRight,
-    //     mouseDistance: 0,
-    //   };
-    // }
-
-    // if (Math.abs(mouseDistanceInPercentage) === changeLimit && mouseDistanceInPercentage < 0) {
-    //   newState = {
-    //     left: newLeftLeft,
-    //     right: newRightLeft,
-    //     mouseDistance: 0,
-    //   };
-    // }
   }
 
   handleToggleMove(event) {
@@ -249,6 +205,7 @@ class RangeInput extends React.Component {
   }
 
   handleBarMouseDown(type) {
+    const { left } = this.state;
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('mouseup', this.handleMouseUp);
 
@@ -256,13 +213,14 @@ class RangeInput extends React.Component {
       isMouseActive: true,
       type,
       mouseDistance: 0,
+      lastLeftPosition: left,
     });
   }
 
   // Render
   // ===================================
   render() {
-    // console.log(this.state);
+    console.log(this.state);
     const { left, right, width } = this.state;
     const { spaces } = this.props;
     return (

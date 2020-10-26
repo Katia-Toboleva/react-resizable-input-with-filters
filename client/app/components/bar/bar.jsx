@@ -24,11 +24,11 @@ const Bar = (props) => {
   };
 
   const getClassnames = () => cx('range-input-bar', {
-    'range-input-bar--gradient-blue-red': left === 10 || right === 10,
-    'range-input-bar--gradient-green-yellow': left === 20 || right === 20,
-    'range-input-bar--gradient-orange-red': left === 30 || right === 30,
-    'range-input-bar--gradient-purple-pink': left === 40 || right === 40,
-    'range-input-bar--gradient-yellow-blue': left === 50 || right === 50,
+    'range-input-bar--gradient-blue-red': width <= 10 || width > 50 && width <= 60,
+    'range-input-bar--gradient-green-yellow': width > 10 && width <= 20 || width > 60 && width <= 70,
+    'range-input-bar--gradient-orange-red': width > 20 && width <= 30 || width > 70 && width <= 80,
+    'range-input-bar--gradient-purple-pink': width > 30 && width <= 40 || width > 80 && width <= 90,
+    'range-input-bar--gradient-yellow-blue': width > 40 && width <= 50 || width > 90 && width < 100,
   });
 
   return (

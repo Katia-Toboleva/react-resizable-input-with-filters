@@ -90,13 +90,13 @@ class RangeInput extends React.Component {
 
   handleToggleLeftMove(event) {
     const { right } = this.state;
-    const { stick } = this.props;
+    const { sticky } = this.props;
     const { width, left } = this.inputRangeRef.current.getBoundingClientRect();
     const value = event.clientX - left;
     const percentage = this.calculatePercentage(value, width);
     const magnetValue = this.getMagnetValue(percentage);
 
-    const newLeft = stick ? magnetValue : percentage;
+    const newLeft = sticky ? magnetValue : percentage;
 
     const isExceedingThresholds = (
       percentage < 0 ||
@@ -116,13 +116,13 @@ class RangeInput extends React.Component {
 
   handleToggleRightMove(event) {
     const { left } = this.state;
-    const { stick } = this.props;
+    const { sticky } = this.props;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const value = (event.clientX - (bounds.left + bounds.width)) * -1;
     const percentage = this.calculatePercentage(value, bounds.width);
     const magnetValue = this.getMagnetValue(percentage);
 
-    const newRight = stick ? magnetValue : percentage;
+    const newRight = sticky ? magnetValue : percentage;
 
     const isExceedingThresholds = (
       percentage < 0 ||
@@ -142,7 +142,7 @@ class RangeInput extends React.Component {
 
   handleBarMove(event) {
     const { width, mouseDistance, lastLeftPosition } = this.state;
-    const { spaces, stick } = this.props;
+    const { spaces, sticky } = this.props;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const spaceWidth = 100 / spaces;
     // const mousePosition = ((event.clientX - bounds.left) * 100) / bounds.width;
@@ -162,7 +162,7 @@ class RangeInput extends React.Component {
       return;
     }
 
-    if (stick) {
+    if (sticky) {
       newLeftPosition = Math.round(newLeftPosition / spaceWidth) * spaceWidth;
       newRightPosition = Math.round(newRightPosition / spaceWidth) * spaceWidth;
     }

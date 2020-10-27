@@ -5,8 +5,10 @@
   height: 40px;
   position: absolute;
   top: -50px;
-  display: none;
+  left: -12px;
+  opacity: 0;
   cursor: pointer;
+  transition: opacity 500ms ease-in-out;
 
   &::before {
     content: '';
@@ -16,20 +18,10 @@
     bottom: -22px;
     left: 14px;
     background-color: rgb(29, 137, 232);
-
-  }
-
-  &--type-left {
-    transform: translateX(-20px);
-
-  }
-
-  &--type-right {
-    transform: translateX(20px);
   }
 
   &--active {
-    display: block;
+    opacity: 1;
   }
 
   &__text {
@@ -40,5 +32,4 @@
     left: 50%;
     transform: translate(-50%, -55%);
   }
-
 }

@@ -222,32 +222,30 @@ class RangeInput extends React.Component {
   // ===================================
   render() {
     console.log(this.state);
-    const { left, right, width, isMouseActive } = this.state;
+    const { left, right, width, isMouseActive, type } = this.state;
     const { spaces } = this.props;
     return (
       <div className={styles['range-input']} ref={this.inputRangeRef}>
         <Bar left={left} right={right} type="bar" width={width} onMouseDown={this.handleBarMouseDown} />
-        <Tooltip left={left} type="left" text={left} active={isMouseActive} />
+
         <Toggle
           left={left}
           type="left"
           onMouseDown={this.handleMouseDown}
-        />
-        <Tooltip right={right} type="right" text={100 - right} active={isMouseActive} />
+        >
+          <Tooltip type="left" text={left} active={isMouseActive && type !== 'right'} />
+        </Toggle>
+
         <Toggle
           right={right}
           type="right"
           onMouseDown={this.handleMouseDown}
-        />
+        >
+          <Tooltip type="right" text={100 - right} active={isMouseActive && type !== 'left'} />
+        </Toggle>
         <br />
         <Scale spaces={spaces} />
         <br />
-
-        <div className={styles['range-input__values']}>
-          <input type='text' value={left} className={styles['range-input__values-field']} />
-          <input type='text' value={100 - right} className={styles['range-input__values-field']} />
-        </div>
-
       </div>
     );
   }

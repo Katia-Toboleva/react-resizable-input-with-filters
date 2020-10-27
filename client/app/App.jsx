@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
 import RangeInput from './components/range-input';
+import styles from './reset.scss';
 
-const App = () => {
-  const [values, setValues] = useState({});
+class App extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const handleChange = (values) => {
-    setValues(values);
-  };
+    this.state = {
+      priceRange: {
+        min: '',
+        max: '',
+      },
+    };
 
-  return (
-    <>
-      <RangeInput onChange={handleChange} spaces={10} sticky />
-      <br />
-      <br />
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-      {/* <input type='text' value={values.left} />
-      <input type='text' value={100 - values.right} /> */}
+  handleChange(values) {
+    this.setState({
+      priceRange: {
+        min: values.left,
+        max: 100 - values.right,
+      },
+    });
+  }
 
-      {/* <Products /> */}
-    </>
-  );
-};
+  render() {
+    const { priceRange } = this.state;
+
+    return (
+      <>
+        <RangeInput onChange={this.handleChange} spaces={10} sticky />
+        <br />
+        <br />
+
+        <input type="text" value={priceRange.min} className={styles['values-field']} />
+        <input type="text" value={priceRange.max} className={styles['values-field']} />
+
+        {/* <Products /> */}
+      </>
+    );
+  }
+}
 
 export default App;

@@ -4,17 +4,4 @@
   background-color: rgb(228, 239, 251);
   position: relative;
   user-select: none;
-
-  &__values {
-    display: flex;
-    justify-content: center;
-  }
-
-  &__values-field {
-    margin: 10px;
-    padding: 10px;
-    box-shadow: 2px 1px 10px rgba(29, 137, 232, 0.5);
-    color: rgb(4, 38, 68);
-    font-weight: bold;;
-  }
 }

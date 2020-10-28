@@ -1,0 +1,19 @@
+.image {
+
+  &--size-small {
+    width: 40px;
+  }
+
+  &--size-medium {
+    width: 250px;
+  }
+
+  &--size-big {
+    width: 40px;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+}

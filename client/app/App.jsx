@@ -1,6 +1,7 @@
 import React from 'react';
 import RangeInput from './components/range-input';
 import Products from './components/products';
+import { Row, Column } from './components/grid';
 import styles from './reset.scss';
 
 class App extends React.Component {
@@ -56,7 +57,8 @@ class App extends React.Component {
       ],
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleRangeInputChange = this.handleRangeInputChange.bind(this);
+    // this.handleInputValueChange = this.handleMinInputValueChange.bind(this);
     this.getMinPrice = this.getMinPrice.bind(this);
     this.getMaxPrice = this.getMaxPrice.bind(this);
   }
@@ -99,7 +101,7 @@ class App extends React.Component {
     return filteredProducts;
   }
 
-  handleChange(values) {
+  handleRangeInputChange(values) {
     const minPrice = this.getMinPrice();
     const maxPrice = this.getMaxPrice();
     const fullRangeValue = maxPrice - minPrice;
@@ -114,25 +116,44 @@ class App extends React.Component {
     });
   }
 
+  // handleMinInputValueChange(event) {
+  //   this.setState({
+  //     priceRange: {
+  //       min: event.currentTarget.value,
+  //     },
+  //   });
+  // }
+
   render() {
     const { priceRange } = this.state;
     const items = this.getItems();
 
     return (
       <>
-        <RangeInput
-          onChange={this.handleChange}
-          min={priceRange.min}
-          max={priceRange.max}
-          spaces={10}
-          sticky
-        />
+        <Row position="center">
+          <RangeInput
+            onChange={this.handleRangeInputChange}
+            min={priceRange.min}
+            max={priceRange.max}
+            spaces={10}
+            sticky
+          />
+        </Row>
 
-        <br />
-        <br />
+        <Row direction="row" position="center">
+          <Column>
+            <input
+              type="text"
+              value={priceRange.min}
+              className={styles['values-field']}
+              // onChange={this.handleMinInputValueChange}
+            />
+          </Column>
+          <Column>
+            <input type="text" value={priceRange.max} className={styles['values-field']} />
+          </Column>
+        </Row>
 
-        <input type="text" value={priceRange.min} className={styles['values-field']} />
-        <input type="text" value={priceRange.max} className={styles['values-field']} />
 
         <Products items={items} />
       </>

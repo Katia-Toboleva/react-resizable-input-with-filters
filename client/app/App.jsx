@@ -1,5 +1,6 @@
 import React from 'react';
 import RangeInput from './components/range-input';
+import Products from './components/products';
 import styles from './reset.scss';
 
 class App extends React.Component {
@@ -11,6 +12,48 @@ class App extends React.Component {
         min: '',
         max: '',
       },
+      products: [
+        {
+          name: 'Mornington Hotel London Victoria',
+          price: 50,
+        },
+        {
+          name: 'Merit Kensington Hotel',
+          price: 60,
+        },
+        {
+          name: 'Holiday Inn London',
+          price: 75,
+        },
+        {
+          name: 'DoubleTree by Hilton London',
+          price: 83,
+        },
+        {
+          name: 'Marlin Aldgate Tower Bridge',
+          price: 93,
+        },
+        {
+          name: 'The Chesterfield Mayfair',
+          price: 123,
+        },
+        {
+          name: 'The Zetter Townhouse Marylebone',
+          price: 172,
+        },
+        {
+          name: 'The Bloomsbury',
+          price: 185,
+        },
+        {
+          name: 'Firmdale Hotel',
+          price: 195,
+        },
+        {
+          name: 'Grand Residences by Marriott',
+          price: 250,
+        },
+      ],
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -25,8 +68,23 @@ class App extends React.Component {
     });
   }
 
+  filteredProducts(products, priceRange) {
+    return priceRange;
+  }
+
+  getItems() {
+    const { priceRange, products } = this.state;
+
+    if (priceRange.min !== '' || priceRange.max !== '') {
+      return this.filteredProducts(priceRange, products);
+    }
+
+    // return products;
+  }
+
   render() {
     const { priceRange } = this.state;
+    const items = this.getItems();
 
     return (
       <>
@@ -37,7 +95,7 @@ class App extends React.Component {
         <input type="text" value={priceRange.min} className={styles['values-field']} />
         <input type="text" value={priceRange.max} className={styles['values-field']} />
 
-        {/* <Products /> */}
+        <Products items={items} />
       </>
     );
   }

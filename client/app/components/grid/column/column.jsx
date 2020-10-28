@@ -9,13 +9,15 @@ const Column = (props) => {
     children,
     grow,
     shrink,
+    flex,
   } = props;
 
   return (
     <div
       className={cx('grid-item', {
-        'grid__item--grow': grow,
-        'grid__item--shrink': shrink,
+        'grid-item--grow': grow,
+        'grid-item--shrink': shrink,
+        [`grid-item--flex-${flex}`]: flex,
       })}
     >
       {children}

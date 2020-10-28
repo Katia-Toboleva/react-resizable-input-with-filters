@@ -1,3 +1,10 @@
 .products {
-  background-color: aquamarine;
+  width: 60vw;
+  margin: 20px auto;
+}
+
+.products__item {
+  padding: 7px 10px;
+  margin: 5px;
+  border: 1px solid rgb(133, 184, 247);
 }

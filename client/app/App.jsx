@@ -68,18 +68,26 @@ class App extends React.Component {
     });
   }
 
-  filteredProducts(products, priceRange) {
-    return priceRange;
+  filteredProducts() {
+    const { priceRange, products } = this.state;
+
+    const filteredProducts = products.filter((product) => {
+      if (product.price >= priceRange.min && product.price <= priceRange.max) {
+        return product;
+      }
+    });
+
+    return filteredProducts;
   }
 
   getItems() {
     const { priceRange, products } = this.state;
 
-    if (priceRange.min !== '' || priceRange.max !== '') {
-      return this.filteredProducts(priceRange, products);
+    if (priceRange.min === '' || priceRange.max === '') {
+      return products;
     }
 
-    // return products;
+    return this.filteredProducts();
   }
 
   render() {

@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './products.scss';
 import { Row, Column } from '../grid';
 import Image from '../image';
+import Text from '../text';
 
 const Products = (props) => {
   const { items } = props;
@@ -13,7 +14,7 @@ const Products = (props) => {
           <Row direction="row">
             <Column grow flex="2">
               <div className={styles['products__name']}>
-                {product.name}
+                <Text text={product.name} theme="dark-blue" />
               </div>
             </Column>
             <Column grow flex="2">
@@ -21,9 +22,10 @@ const Products = (props) => {
                 <Image url={product.url} size="medium" />
               </div>
             </Column>
-            <Column shrink flex="1">
+            <Column shrink flex="1" >
               <div className={styles['products__price']}>
-                {`£${product.price}`}
+                <Text text={`£${product.price}`} theme="brick" size="big" />
+                <Text text="per night" />
               </div>
             </Column>
           </Row>

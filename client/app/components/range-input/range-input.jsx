@@ -225,27 +225,29 @@ class RangeInput extends React.Component {
     const { left, right, width, isMouseActive, type } = this.state;
     const { spaces, min, max } = this.props;
     return (
-      <div className={styles['range-input']} ref={this.inputRangeRef}>
-        <Bar left={left} right={right} type="bar" width={width} onMouseDown={this.handleBarMouseDown} />
+      <div className={styles['range-input-container']}>
+        <div className={styles['range-input']} ref={this.inputRangeRef}>
+          <Bar left={left} right={right} type="bar" width={width} onMouseDown={this.handleBarMouseDown} />
 
-        <Toggle
-          left={left}
-          type="left"
-          onMouseDown={this.handleMouseDown}
-        >
-          <Tooltip type="left" text={min} active={isMouseActive && type !== 'right'} />
-        </Toggle>
+          <Toggle
+            left={left}
+            type="left"
+            onMouseDown={this.handleMouseDown}
+          >
+            <Tooltip type="left" text={min} active={isMouseActive && type !== 'right'} />
+          </Toggle>
 
-        <Toggle
-          right={right}
-          type="right"
-          onMouseDown={this.handleMouseDown}
-        >
-          <Tooltip type="right" text={max} active={isMouseActive && type !== 'left'} />
-        </Toggle>
-        <br />
-        <Scale spaces={spaces} />
-        <br />
+          <Toggle
+            right={right}
+            type="right"
+            onMouseDown={this.handleMouseDown}
+          >
+            <Tooltip type="right" text={max} active={isMouseActive && type !== 'left'} />
+          </Toggle>
+          <br />
+          <Scale spaces={spaces} />
+          <br />
+        </div>
       </div>
     );
   }

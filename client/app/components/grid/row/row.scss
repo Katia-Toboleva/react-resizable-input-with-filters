@@ -16,6 +16,9 @@
 
   &--position-baseline {
     align-items: baseline;
+  }
 
+  &--position-space-between {
+    justify-content: space-between;
   }
 }

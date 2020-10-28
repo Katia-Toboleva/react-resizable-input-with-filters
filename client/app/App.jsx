@@ -17,42 +17,52 @@ class App extends React.Component {
         {
           name: 'Mornington Hotel London Victoria',
           price: 50,
+          url: 'https://exp.cdn-hotels.com/hotels/1000000/20000/14300/14264/7d872231_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
         {
           name: 'Merit Kensington Hotel',
           price: 60,
+          url: 'https://exp.cdn-hotels.com/hotels/1000000/30000/28600/28508/00b600ec_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
         {
           name: 'Holiday Inn London',
           price: 75,
+          url: 'https://exp.cdn-hotels.com/hotels/1000000/30000/20200/20124/bc169fd5_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
         {
           name: 'DoubleTree by Hilton London',
           price: 83,
+          url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/100/1/32995e71_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
         {
           name: 'Marlin Aldgate Tower Bridge',
           price: 93,
+          url: 'https://exp.cdn-hotels.com/hotels/29000000/28760000/28758100/28758089/789e750f_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
         {
           name: 'The Chesterfield Mayfair',
           price: 123,
+          url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/100/1/32995e71_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
         {
           name: 'The Zetter Townhouse Marylebone',
           price: 172,
+          url: 'https://exp.cdn-hotels.com/hotels/29000000/28760000/28758100/28758089/789e750f_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
         {
           name: 'The Bloomsbury',
           price: 185,
+          url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/2300/2276/ca632b05_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
         {
           name: 'Firmdale Hotel',
           price: 195,
+          url: 'https://exp.cdn-hotels.com/hotels/29000000/28760000/28758100/28758089/789e750f_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
         {
           name: 'Grand Residences by Marriott',
           price: 250,
+          url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/100/1/32995e71_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
         },
       ],
     };

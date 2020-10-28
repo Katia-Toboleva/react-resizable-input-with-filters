@@ -221,9 +221,9 @@ class RangeInput extends React.Component {
   // Render
   // ===================================
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     const { left, right, width, isMouseActive, type } = this.state;
-    const { spaces } = this.props;
+    const { spaces, min, max } = this.props;
     return (
       <div className={styles['range-input']} ref={this.inputRangeRef}>
         <Bar left={left} right={right} type="bar" width={width} onMouseDown={this.handleBarMouseDown} />
@@ -233,7 +233,7 @@ class RangeInput extends React.Component {
           type="left"
           onMouseDown={this.handleMouseDown}
         >
-          <Tooltip type="left" text={left} active={isMouseActive && type !== 'right'} />
+          <Tooltip type="left" text={min} active={isMouseActive && type !== 'right'} />
         </Toggle>
 
         <Toggle
@@ -241,7 +241,7 @@ class RangeInput extends React.Component {
           type="right"
           onMouseDown={this.handleMouseDown}
         >
-          <Tooltip type="right" text={100 - right} active={isMouseActive && type !== 'left'} />
+          <Tooltip type="right" text={max} active={isMouseActive && type !== 'left'} />
         </Toggle>
         <br />
         <Scale spaces={spaces} />

@@ -1,0 +1,21 @@
+.text {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.7px;
+
+  &--bold {
+    font-weight: bold;
+  }
+
+  &--upper {
+    text-transform: uppercase;
+  }
+
+  &--theme-bright {
+    color: rgb(148, 2, 39);
+  }
+
+  &--theme-brick {
+    color: rgb(53, 0, 9);
+  }
+}

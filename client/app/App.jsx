@@ -103,12 +103,13 @@ class App extends React.Component {
     const minPrice = this.getMinPrice();
     const maxPrice = this.getMaxPrice();
     const fullRangeValue = maxPrice - minPrice;
-    const stepValue = (values.left * fullRangeValue) / 100;
+    const stepLeftValue = (values.left * fullRangeValue) / 100;
+    const stepRightValue = (values.right * fullRangeValue) / 100;
 
     this.setState({
       priceRange: {
-        min: minPrice + stepValue,
-        max: maxPrice - stepValue,
+        min: minPrice + stepLeftValue,
+        max: maxPrice - stepRightValue,
       },
     });
   }

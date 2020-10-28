@@ -23,8 +23,7 @@ const Row = (props) => {
 };
 
 Row.defaultProps = {
-  direction: 'row',
-  position: 'center',
+  direction: 'column',
 };
 
 export default Row;

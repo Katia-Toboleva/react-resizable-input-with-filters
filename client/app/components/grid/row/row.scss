@@ -1,6 +1,5 @@
 .grid {
   display: flex;
-  
 
   &--column {
     flex-direction: column;
@@ -17,6 +16,6 @@
 
   &--position-baseline {
     align-items: baseline;
-    
+
   }
 }

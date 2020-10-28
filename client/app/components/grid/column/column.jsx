@@ -8,7 +8,7 @@ const Column = (props) => {
   const {
     children,
     grow,
-    shrink
+    shrink,
   } = props;
 
   return (

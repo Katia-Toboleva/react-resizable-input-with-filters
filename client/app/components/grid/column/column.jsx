@@ -10,6 +10,7 @@ const Column = (props) => {
     grow,
     shrink,
     flex,
+    align,
   } = props;
 
   return (
@@ -17,6 +18,7 @@ const Column = (props) => {
       className={cx('grid-item', {
         'grid-item--grow': grow,
         'grid-item--shrink': shrink,
+        'grid-item--align-self': align,
         [`grid-item--flex-${flex}`]: flex,
       })}
     >

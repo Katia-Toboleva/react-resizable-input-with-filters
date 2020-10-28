@@ -6,7 +6,7 @@ const cx = classnames.bind(styles);
 
 const Text = (props) => {
   const {
-    bold, upper, theme, text,
+    bold, upper, theme, text, size,
   } = props;
 
   return (
@@ -14,6 +14,7 @@ const Text = (props) => {
       'text--bold': bold,
       'text--upper': upper,
       [`text--theme-${theme}`]: theme,
+      [`text--size-${size}`]: size,
     })}
     >
       {text}

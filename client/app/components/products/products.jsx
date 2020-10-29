@@ -10,11 +10,12 @@ const Products = (props) => {
   return (
     <div className={styles['products']}>
       {items.map((product, index) => (
-        <div className={styles['products__item']} key={index}>
+        <div className={styles['products-item']} key={index}>
           <Row direction="row">
             <Column grow flex="2">
               <div className={styles['products__name']}>
-                <Text text={product.name} theme="dark-blue" />
+                <Text text={product.name} theme="dark-blue" bold />
+                <Text text={product.address} theme="dark-blue" size="small" />
               </div>
             </Column>
             <Column grow flex="2">
@@ -22,17 +23,16 @@ const Products = (props) => {
                 <Image url={product.url} size="medium" />
               </div>
             </Column>
-            <Column shrink flex="1" >
+            <Column shrink flex="1">
               <div className={styles['products__price']}>
                 <Text text={`£${product.price}`} theme="brick" size="big" />
-                <Text text="per night" />
+                <Text text="per night" theme="dark-blue" />
               </div>
             </Column>
           </Row>
         </div>
 
       ))}
-
 
     </div>
 

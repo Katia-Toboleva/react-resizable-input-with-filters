@@ -17,7 +17,7 @@ const Text = (props) => {
       [`text--size-${size}`]: size,
     })}
     >
-      {text}
+      <span>{text}</span>
     </div>
   );
 };

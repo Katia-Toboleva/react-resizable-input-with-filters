@@ -6,7 +6,11 @@ const cx = classnames.bind(styles);
 
 const Toggle = (props) => {
   const {
-    type, onMouseDown, right, left, children,
+    type,
+    onMouseDown,
+    right,
+    left,
+    children,
   } = props;
 
   const handleMouseDown = () => {
@@ -17,6 +21,8 @@ const Toggle = (props) => {
     left: `${left}%`,
     right: `${right}%`,
   };
+
+  // console.log(props);
 
   return (
     <div

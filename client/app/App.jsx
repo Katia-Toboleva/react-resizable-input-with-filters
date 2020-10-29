@@ -187,7 +187,7 @@ class App extends React.Component {
 
     if (newMax <= maxPrice && priceRange.max > priceRange.min) {
       this.setState({
-        //how do I make sure min and max are now updated with the newMax values??
+        //how do I make sure min and max are NOT updated with the newMax values??
         inputFieldActive: false,
       });
     }

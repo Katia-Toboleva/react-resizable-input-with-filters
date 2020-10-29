@@ -221,16 +221,37 @@ class RangeInput extends React.Component {
   // Render
   // ===================================
   render() {
-    // console.log(this.state);
-    const { left, right, width, isMouseActive, type } = this.state;
-    const { spaces, min, max } = this.props;
+    console.log(this.state);
+    const {
+      left,
+      right,
+      width,
+      isMouseActive,
+      type,
+    } = this.state;
+    const {
+      spaces,
+      min,
+      max,
+      leftPercentFromInput,
+      rightPercentFromInput,
+      controlledByInputField,
+      widthInput,
+    } = this.props;
+
     return (
       <div className={styles['range-input-container']}>
         <div className={styles['range-input']} ref={this.inputRangeRef}>
-          <Bar left={left} right={right} type="bar" width={width} onMouseDown={this.handleBarMouseDown} />
+          <Bar
+            left={controlledByInputField ? leftPercentFromInput : left}
+            right={controlledByInputField ? rightPercentFromInput : right}
+            type="bar"
+            width={controlledByInputField ? widthInput : width}
+            onMouseDown={this.handleBarMouseDown}
+          />
 
           <Toggle
-            left={left}
+            left={controlledByInputField ? leftPercentFromInput : left}
             type="left"
             onMouseDown={this.handleMouseDown}
           >
@@ -238,7 +259,7 @@ class RangeInput extends React.Component {
           </Toggle>
 
           <Toggle
-            right={right}
+            right={controlledByInputField ? rightPercentFromInput : right}
             type="right"
             onMouseDown={this.handleMouseDown}
           >

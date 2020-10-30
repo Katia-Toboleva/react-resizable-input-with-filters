@@ -48,6 +48,7 @@ class RangeInput extends React.Component {
         left: leftPercent,
         right: rightPercent,
         width: widthPercent,
+        inputActive: false,
       };
     }
 

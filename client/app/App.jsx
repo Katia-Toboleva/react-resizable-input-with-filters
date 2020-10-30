@@ -110,16 +110,6 @@ class App extends React.Component {
     return this.filteredProducts();
   }
 
-  getMinInputValuePercent(fullRangeValue, minPrice) {
-    const { priceRange } = this.state;
-    return ((priceRange.min - minPrice) * 100) / fullRangeValue;
-  }
-
-  getMaxInputValuePercent(fullRangeValue, maxPrice) {
-    const { priceRange } = this.state;
-    return ((maxPrice - priceRange.max) * 100) / fullRangeValue;
-  }
-
   filteredProducts() {
     const { priceRange, products } = this.state;
 
@@ -162,40 +152,43 @@ class App extends React.Component {
     const minPrice = this.getMinPrice();
     const maxPrice = this.getMaxPrice();
     const { priceRange } = this.state;
-    const newMin = Number(event.currentTarget.value);
+    const { value } = event.currentTarget;
 
-    if (newMin < minPrice && priceRange.min > priceRange.max) {
-      this.setState({
-        inputFieldActive: false,
-      });
+    if (Number(value) < minPrice) {
+      return;
+    }
+
+    if (priceRange.max !== '' && Number(value) > Number(priceRange.max)) {
+      return;
     }
 
     this.setState({
       priceRange: {
-        min: newMin,
-        max: priceRange.max === '' ? maxPrice : priceRange.max,
+        min: Number(value),
+        max: priceRange.max || maxPrice,
       },
       inputFieldActive: true,
     });
-  }
+  };
 
   handleMaxInputValueChange(event) {
     const minPrice = this.getMinPrice();
     const maxPrice = this.getMaxPrice();
     const { priceRange } = this.state;
-    const newMax = Number(event.currentTarget.value);
+    const { value } = event.currentTarget;
 
-    if (newMax <= maxPrice && priceRange.max > priceRange.min) {
-      this.setState({
-        //how do I make sure min and max are NOT updated with the newMax values??
-        inputFieldActive: false,
-      });
+    if (Number(value) >= maxPrice) {
+      return;
+    }
+
+    if (priceRange.min !== '' && Number(value) < Number(priceRange.min)) {
+      return;
     }
 
     this.setState({
       priceRange: {
-        min: priceRange.min === '' ? minPrice : priceRange.min,
-        max: newMax,
+        min: priceRange.min || minPrice,
+        max: Number(value),
       },
       inputFieldActive: true,
     });
@@ -207,24 +200,18 @@ class App extends React.Component {
     const items = this.getItems();
     const minPrice = this.getMinPrice();
     const maxPrice = this.getMaxPrice();
-    const fullRangeValue = this.calculateFullRangeValue(maxPrice, minPrice);
-    const minInputValuePercent = this.getMinInputValuePercent(fullRangeValue, minPrice);
-    const maxInputValuePercent = this.getMaxInputValuePercent(fullRangeValue, maxPrice);
-    const widthInputPercent = 100 - maxInputValuePercent - minInputValuePercent;
 
     return (
       <>
         <Row position="center">
           <RangeInput
-            min={priceRange.min === '' ? minPrice : priceRange.min}
-            max={priceRange.max === '' ? maxPrice : priceRange.max}
-            leftPercentFromInput={minInputValuePercent}
-            rightPercentFromInput={maxInputValuePercent}
-            widthInput={widthInputPercent}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            values={[priceRange.min || minPrice, priceRange.max || maxPrice]}
             spaces={10}
             sticky
-            controlledByInputField={inputFieldActive}
             onChange={this.handleRangeInputChange}
+            inputActive={inputFieldActive}
           />
         </Row>
 
@@ -232,7 +219,7 @@ class App extends React.Component {
           <Column>
             <input
               type="text"
-              value={priceRange.min === '' ? minPrice : priceRange.min}
+              placeholder={priceRange.min || minPrice}
               className={styles['values-field']}
               onChange={this.handleMinInputValueChange}
             />
@@ -240,7 +227,7 @@ class App extends React.Component {
           <Column>
             <input
               type="text"
-              value={priceRange.max === '' ? maxPrice : priceRange.max}
+              placeholder={priceRange.max || maxPrice}
               className={styles['values-field']}
               onChange={this.handleMaxInputValueChange}
             />

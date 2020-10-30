@@ -42,13 +42,13 @@ class RangeInput extends React.Component {
     const rightPercent = ((maxPrice - right) * 100) / fullRangeValue;
     const widthPercent = 100 - (leftPercent + rightPercent);
 
-    if (inputActive) {
+    if (inputActive !== state.inputActive) {
       return {
         ...state,
         left: leftPercent,
         right: rightPercent,
         width: widthPercent,
-        inputActive: false,
+        inputActive: !inputActive,
       };
     }
 

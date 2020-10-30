@@ -17,6 +17,7 @@ class RangeInput extends React.Component {
       right: 0,
       width: 100,
       mouseDistance: 0,
+      inputActive: false,
     };
 
     this.inputRangeRef = React.createRef();
@@ -25,6 +26,32 @@ class RangeInput extends React.Component {
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleBarMouseDown = this.handleBarMouseDown.bind(this);
+  }
+
+  // Lifecycle
+  //= ====================================
+
+  // problem with the FN below. https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+  // the state does not get updated by the toggles and bar because it's always mirrored from the fn below.right-align
+  //
+  static getDerivedStateFromProps(props, state) {
+    const [left, right] = props.values;
+    const { minPrice, maxPrice, inputActive } = props;
+    const fullRangeValue = maxPrice - minPrice;
+    const leftPercent = ((left - minPrice) * 100) / fullRangeValue;
+    const rightPercent = ((maxPrice - right) * 100) / fullRangeValue;
+    const widthPercent = 100 - (leftPercent + rightPercent);
+
+    if (inputActive) {
+      return {
+        ...state,
+        left: leftPercent,
+        right: rightPercent,
+        width: widthPercent,
+      };
+    }
+
+    return {};
   }
 
   // Events
@@ -222,6 +249,8 @@ class RangeInput extends React.Component {
   // ===================================
   render() {
     console.log(this.state);
+    console.log(this.props);
+
     const {
       left,
       right,
@@ -229,41 +258,39 @@ class RangeInput extends React.Component {
       isMouseActive,
       type,
     } = this.state;
+
     const {
       spaces,
-      min,
-      max,
-      leftPercentFromInput,
-      rightPercentFromInput,
-      controlledByInputField,
-      widthInput,
+      values,
     } = this.props;
+
+    const [leftValue, rightValue] = values;
 
     return (
       <div className={styles['range-input-container']}>
         <div className={styles['range-input']} ref={this.inputRangeRef}>
           <Bar
-            left={controlledByInputField ? leftPercentFromInput : left}
-            right={controlledByInputField ? rightPercentFromInput : right}
+            left={left}
+            right={right}
             type="bar"
-            width={controlledByInputField ? widthInput : width}
+            width={width}
             onMouseDown={this.handleBarMouseDown}
           />
 
           <Toggle
-            left={controlledByInputField ? leftPercentFromInput : left}
+            left={left}
             type="left"
             onMouseDown={this.handleMouseDown}
           >
-            <Tooltip type="left" text={min} active={isMouseActive && type !== 'right'} />
+            <Tooltip type="left" text={leftValue} active={isMouseActive && type !== 'right'} />
           </Toggle>
 
           <Toggle
-            right={controlledByInputField ? rightPercentFromInput : right}
+            right={right}
             type="right"
             onMouseDown={this.handleMouseDown}
           >
-            <Tooltip type="right" text={max} active={isMouseActive && type !== 'left'} />
+            <Tooltip type="right" text={rightValue} active={isMouseActive && type !== 'left'} />
           </Toggle>
           <br />
           <Scale spaces={spaces} />

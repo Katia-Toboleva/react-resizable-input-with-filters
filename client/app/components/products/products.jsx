@@ -6,7 +6,6 @@ import Text from '../text';
 
 const Products = (props) => {
   const { items } = props;
-  // console.log(props);
   return (
     <div className={styles['products']}>
       {items.map((product, index) => (

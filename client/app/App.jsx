@@ -140,7 +140,6 @@ class App extends React.Component {
   }
 
   handleRangeInputChange(values) {
-    // console.log(values);
     const minPrice = this.getMinPrice();
     const maxPrice = this.getMaxPrice();
     const fullRangeValue = this.calculateFullRangeValue(maxPrice, minPrice);
@@ -157,7 +156,6 @@ class App extends React.Component {
 
   handleMinInputValueChange(event) {
     const minPrice = this.getMinPrice();
-    const maxPrice = this.getMaxPrice();
     const { priceRange } = this.state;
     const { value } = event.currentTarget;
 
@@ -172,18 +170,17 @@ class App extends React.Component {
     this.setState({
       priceRange: {
         min: Number(value),
-        max: priceRange.max || maxPrice,
+        max: priceRange.max,
       },
     });
   }
 
   handleMaxInputValueChange(event) {
-    const minPrice = this.getMinPrice();
     const maxPrice = this.getMaxPrice();
     const { priceRange } = this.state;
     const { value } = event.currentTarget;
 
-    if (Number(value) >= maxPrice) {
+    if (Number(value) > maxPrice) {
       return;
     }
 
@@ -193,15 +190,18 @@ class App extends React.Component {
 
     this.setState({
       priceRange: {
-        min: priceRange.min || minPrice,
+        min: priceRange.min,
         max: Number(value),
       },
     });
   }
 
   render() {
-    // console.log(this.state);
+    // console.log('state of App', this.state);
+
     const { priceRange } = this.state;
+    const minPrice = this.getMinPrice();
+    const maxPrice = this.getMaxPrice();
     const items = this.getItems();
 
     if (!priceRange) {
@@ -212,8 +212,8 @@ class App extends React.Component {
       <>
         <Row position="center">
           <RangeInput
-            minPrice={priceRange.min}
-            maxPrice={priceRange.max}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
             values={[priceRange.min, priceRange.max]}
             spaces={10}
             sticky

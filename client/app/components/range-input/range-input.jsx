@@ -5,6 +5,27 @@ import Scale from '../scale';
 import Tooltip from '../tooltip';
 import styles from './range-input.scss';
 
+const getCoordinates = (props) => {
+  const { minPrice, maxPrice, values } = props;
+
+  if (!values) {
+    return {};
+  }
+
+  const [left, right] = values;
+
+  const fullRangeValue = maxPrice - minPrice;
+  const leftPercent = ((left - minPrice) * 100) / fullRangeValue;
+  const rightPercent = ((maxPrice - right) * 100) / fullRangeValue;
+  const widthPercent = 100 - (leftPercent + rightPercent);
+
+  return {
+    left: leftPercent,
+    right: rightPercent,
+    width: widthPercent,
+  };
+};
+
 class RangeInput extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +38,6 @@ class RangeInput extends React.Component {
       right: 0,
       width: 100,
       mouseDistance: 0,
-      inputActive: false,
     };
 
     this.inputRangeRef = React.createRef();
@@ -29,35 +49,33 @@ class RangeInput extends React.Component {
   }
 
   // Lifecycle
-  //= ====================================
-
-  // problem with the FN below. https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
-  // the state does not get updated by the toggles and bar because it's always mirrored from the fn below.right-align
-  //
+  // =====================================
   static getDerivedStateFromProps(props, state) {
-    const [left, right] = props.values;
-    const { minPrice, maxPrice, inputActive } = props;
-    const fullRangeValue = maxPrice - minPrice;
-    const leftPercent = ((left - minPrice) * 100) / fullRangeValue;
-    const rightPercent = ((maxPrice - right) * 100) / fullRangeValue;
-    const widthPercent = 100 - (leftPercent + rightPercent);
+    const { values } = props;
+    const { left, right, width } = getCoordinates(props);
 
-    if (inputActive !== state.inputActive) {
+    const haveCoordinatesChanged = (
+      left !== state.left ||
+      right !== state.right
+    );
+
+    if (
+      Array.isArray(values) &&
+      values.length &&
+      haveCoordinatesChanged
+    ) {
       return {
-        ...state,
-        left: leftPercent,
-        right: rightPercent,
-        width: widthPercent,
-        inputActive: !inputActive,
+        left,
+        right,
+        width,
       };
     }
 
-    return {};
+    return null;
   }
 
   // Events
   // ===================================
-
   getPercentage() {
     const { left, right } = this.state;
     const selectedWidth = 100 - (left + right);

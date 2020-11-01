@@ -9,10 +9,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      priceRange: {
-        min: '',
-        max: '',
-      },
+      priceRange: undefined,
       products: [
         {
           name: 'Mornington Hotel London Victoria',
@@ -76,7 +73,6 @@ class App extends React.Component {
           address: '47 Park St, Mayfair, London W1K 7EB',
         },
       ],
-      inputFieldActive: false,
     };
 
     this.handleRangeInputChange = this.handleRangeInputChange.bind(this);
@@ -84,6 +80,17 @@ class App extends React.Component {
     this.handleMaxInputValueChange = this.handleMaxInputValueChange.bind(this);
     this.getMinPrice = this.getMinPrice.bind(this);
     this.getMaxPrice = this.getMaxPrice.bind(this);
+  }
+
+  // Lifecycle events
+  // ======================
+  componentDidMount() {
+    this.setState({
+      priceRange: {
+        min: this.getMinPrice(),
+        max: this.getMaxPrice(),
+      },
+    });
   }
 
   getMinPrice() {
@@ -103,7 +110,7 @@ class App extends React.Component {
   getItems() {
     const { priceRange, products } = this.state;
 
-    if (priceRange.min === '' || priceRange.max === '') {
+    if (!priceRange || !priceRange.min || !priceRange.max) {
       return products;
     }
 
@@ -167,9 +174,8 @@ class App extends React.Component {
         min: Number(value),
         max: priceRange.max || maxPrice,
       },
-      inputFieldActive: true,
     });
-  };
+  }
 
   handleMaxInputValueChange(event) {
     const minPrice = this.getMinPrice();
@@ -190,28 +196,28 @@ class App extends React.Component {
         min: priceRange.min || minPrice,
         max: Number(value),
       },
-      inputFieldActive: true,
     });
   }
 
   render() {
     // console.log(this.state);
-    const { priceRange, inputFieldActive } = this.state;
+    const { priceRange } = this.state;
     const items = this.getItems();
-    const minPrice = this.getMinPrice();
-    const maxPrice = this.getMaxPrice();
+
+    if (!priceRange) {
+      return null;
+    }
 
     return (
       <>
         <Row position="center">
           <RangeInput
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            values={[priceRange.min || minPrice, priceRange.max || maxPrice]}
+            minPrice={priceRange.min}
+            maxPrice={priceRange.max}
+            values={[priceRange.min, priceRange.max]}
             spaces={10}
             sticky
             onChange={this.handleRangeInputChange}
-            inputActive={inputFieldActive}
           />
         </Row>
 
@@ -219,7 +225,7 @@ class App extends React.Component {
           <Column>
             <input
               type="text"
-              placeholder={priceRange.min || minPrice}
+              placeholder={priceRange.min}
               className={styles['values-field']}
               onChange={this.handleMinInputValueChange}
             />
@@ -227,7 +233,7 @@ class App extends React.Component {
           <Column>
             <input
               type="text"
-              placeholder={priceRange.max || maxPrice}
+              placeholder={priceRange.max}
               className={styles['values-field']}
               onChange={this.handleMaxInputValueChange}
             />

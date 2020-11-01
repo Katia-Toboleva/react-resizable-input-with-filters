@@ -26,6 +26,13 @@ const getCoordinates = (props) => {
   };
 };
 
+const getMagnetValue = (percentage, spaces) => {
+  const step = 100 / spaces;
+  const magnetValue = (Math.round(percentage / step)) * step;
+
+  return magnetValue;
+};
+
 class RangeInput extends React.Component {
   constructor(props) {
     super(props);
@@ -49,9 +56,9 @@ class RangeInput extends React.Component {
   }
 
   // Lifecycle
-  // =====================================
+  // // =====================================
   static getDerivedStateFromProps(props, state) {
-    const { values } = props;
+    const { values, sticky, spaces } = props;
     const { left, right, width } = getCoordinates(props);
 
     const haveCoordinatesChanged = (
@@ -59,15 +66,20 @@ class RangeInput extends React.Component {
       right !== state.right
     );
 
+    const newLeft = sticky ? getMagnetValue(left, spaces) : left;
+    const newRight = sticky ? getMagnetValue(right, spaces) : right;
+    const newWidth = sticky ? (100 - (newLeft + newRight)) : width;
+
     if (
       Array.isArray(values) &&
       values.length &&
-      haveCoordinatesChanged
+      haveCoordinatesChanged &&
+      !state.isMouseActive
     ) {
       return {
-        left,
-        right,
-        width,
+        left: newLeft,
+        right: newRight,
+        width: newWidth,
       };
     }
 
@@ -76,19 +88,6 @@ class RangeInput extends React.Component {
 
   // Events
   // ===================================
-  getPercentage() {
-    const { left, right } = this.state;
-    const selectedWidth = 100 - (left + right);
-    return selectedWidth;
-  }
-
-  getMagnetValue(percentage) {
-    const { spaces } = this.props;
-    const step = 100 / spaces;
-    const rounded = (Math.round(percentage / step)) * step;
-
-    return rounded;
-  }
 
   calculatePercentage(value, width) {
     return (value * 100) / (width);
@@ -136,11 +135,11 @@ class RangeInput extends React.Component {
 
   handleToggleLeftMove(event) {
     const { right } = this.state;
-    const { sticky } = this.props;
+    const { sticky, spaces } = this.props;
     const { width, left } = this.inputRangeRef.current.getBoundingClientRect();
     const value = event.clientX - left;
     const percentage = this.calculatePercentage(value, width);
-    const magnetValue = this.getMagnetValue(percentage);
+    const magnetValue = getMagnetValue(percentage, spaces);
 
     const newLeft = sticky ? magnetValue : percentage;
 
@@ -162,11 +161,11 @@ class RangeInput extends React.Component {
 
   handleToggleRightMove(event) {
     const { left } = this.state;
-    const { sticky } = this.props;
+    const { sticky, spaces } = this.props;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const value = (event.clientX - (bounds.left + bounds.width)) * -1;
     const percentage = this.calculatePercentage(value, bounds.width);
-    const magnetValue = this.getMagnetValue(percentage);
+    const magnetValue = getMagnetValue(percentage, spaces);
 
     const newRight = sticky ? magnetValue : percentage;
 
@@ -233,6 +232,7 @@ class RangeInput extends React.Component {
     const {
       isMouseActive, type, left, right,
     } = this.state;
+    const { onChange } = this.props;
 
     if (type !== 'bar') {
       this.handleToggleMove(event);
@@ -243,12 +243,11 @@ class RangeInput extends React.Component {
     }
 
     const values = {
-      left: Math.round(left),
-      right: Math.round(right),
-      percentage: Math.round(this.getPercentage()),
+      left,
+      right,
     };
 
-    this.props.onChange(values);
+    onChange(values);
   }
 
   handleBarMouseDown(type) {
@@ -267,8 +266,7 @@ class RangeInput extends React.Component {
   // Render
   // ===================================
   render() {
-    console.log(this.state);
-    console.log(this.props);
+    // console.log('rendered state of Range:', this.state);
 
     const {
       left,

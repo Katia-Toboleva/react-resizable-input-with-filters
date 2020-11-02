@@ -161,15 +161,11 @@ class App extends React.Component {
     const maxPrice = getMaxPrice(products);
     const items = this.getItems();
 
-    if (!priceRange) {
-      return null;
-    }
-
     return (
       <div>
-        {fetchProductsRequestStatus === 'pending' && <div className={styles.status}>Hold on, we are fetching the data</div>}
+        {fetchProductsRequestStatus === 'pending' && <div className={styles.status}>Getting the best deals for you...</div>}
 
-        {fetchProductsRequestStatus === 'rejected' && <div className={styles.status}>We have not received data from the server, please try again</div>}
+        {fetchProductsRequestStatus === 'rejected' && <div className={styles.status}>We cannot reach the server, please try again</div>}
 
         {fetchProductsRequestStatus === 'success' && products.length !== 0 && (
           <>

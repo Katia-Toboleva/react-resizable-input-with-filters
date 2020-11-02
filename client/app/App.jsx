@@ -4,6 +4,18 @@ import { Products, fetchProducts } from './components/products';
 import { Row, Column } from './components/grid';
 import styles from './reset.scss';
 
+const getMinPrice = (products) => {
+  const minPrice = Math.min(...products.map((item) => item.price));
+
+  return minPrice;
+};
+
+const getMaxPrice = (products) => {
+  const maxPrice = Math.max(...products.map((item) => item.price));
+
+  return maxPrice;
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -20,8 +32,6 @@ class App extends React.Component {
     this.handleRangeInputChange = this.handleRangeInputChange.bind(this);
     this.handleMinInputValueChange = this.handleMinInputValueChange.bind(this);
     this.handleMaxInputValueChange = this.handleMaxInputValueChange.bind(this);
-    this.getMinPrice = this.getMinPrice.bind(this);
-    this.getMaxPrice = this.getMaxPrice.bind(this);
   }
 
   // Lifecycle events
@@ -34,17 +44,12 @@ class App extends React.Component {
     this.setState({
       products,
       fetchProductsRequestStatus: 'success',
-    })
+      priceRange: {
+        min: getMinPrice(products),
+        max: getMaxPrice(products),
+      },
+    });
   }
-
-  // setFirstState() {
-  //   this.setState({
-  //     priceRange: {
-  //       min: this.getMinPrice(),
-  //       max: this.getMaxPrice(),
-  //     },
-  //   });
-  // }
 
   handleFetchProductsRejected() {
     this.setState({
@@ -59,25 +64,10 @@ class App extends React.Component {
 
     fetchProducts()
       .then(this.handleFetchProductsSuccess)
-      // .then(this.setFirstState)
       .catch(this.handleFetchProductsRejected);
   }
 
   // Events===================================
-
-  getMinPrice() {
-    const { products } = this.state;
-    const minPrice = Math.min(...products.map((item) => item.price));
-
-    return minPrice;
-  }
-
-  getMaxPrice() {
-    const { products } = this.state;
-    const maxPrice = Math.max(...products.map((item) => item.price));
-
-    return maxPrice;
-  }
 
   getItems() {
     const { priceRange, products } = this.state;
@@ -112,8 +102,9 @@ class App extends React.Component {
   }
 
   handleRangeInputChange(values) {
-    const minPrice = this.getMinPrice();
-    const maxPrice = this.getMaxPrice();
+    const { products } = this.state;
+    const minPrice = getMinPrice(products);
+    const maxPrice = getMaxPrice(products);
     const fullRangeValue = this.calculateFullRangeValue(maxPrice, minPrice);
     const stepLeftValue = this.convertPercentIntoNumber(values.left, fullRangeValue);
     const stepRightValue = this.convertPercentIntoNumber(values.right, fullRangeValue);
@@ -127,9 +118,9 @@ class App extends React.Component {
   }
 
   handleMinInputValueChange(event) {
-    const minPrice = this.getMinPrice();
-    const { priceRange } = this.state;
+    const { products, priceRange } = this.state;
     const { value } = event.currentTarget;
+    const minPrice = getMinPrice(products);
 
     if (Number(value) < minPrice) {
       return;
@@ -148,9 +139,9 @@ class App extends React.Component {
   }
 
   handleMaxInputValueChange(event) {
-    const maxPrice = this.getMaxPrice();
-    const { priceRange } = this.state;
+    const { products, priceRange } = this.state;
     const { value } = event.currentTarget;
+    const maxPrice = getMaxPrice(products);
 
     if (Number(value) > maxPrice) {
       return;
@@ -169,11 +160,11 @@ class App extends React.Component {
   }
 
   render() {
-    // console.log('state of App', this.state);
-    const { fetchProductsRequestStatus } = this.state;
-    const { priceRange } = this.state;
-    // const minPrice = this.getMinPrice();
-    // const maxPrice = this.getMaxPrice();
+    console.log('state of App', this.state);
+
+    const { priceRange, products, fetchProductsRequestStatus } = this.state;
+    const minPrice = getMinPrice(products);
+    const maxPrice = getMaxPrice(products);
     const items = this.getItems();
 
     if (!priceRange) {
@@ -181,47 +172,47 @@ class App extends React.Component {
     }
 
     return (
-      <>
-        {fetchProductsRequestStatus === 'pending' && <div>Hold on, we are fetching the data</div>}
+      <div>
+        {fetchProductsRequestStatus === 'pending' && <div className={styles.status}>Hold on, we are fetching the data</div>}
 
-        {fetchProductsRequestStatus === 'rejected' && <div>We have not received data from the server, please try again later</div>}
+        {fetchProductsRequestStatus === 'rejected' && <div className={styles.status}>We have not received data from the server, please try again</div>}
 
         {fetchProductsRequestStatus === 'success' && products.length !== 0 && (
-        <>
-        <Row position="center">
-          <RangeInput
-            minPrice={priceRange.min}
-            maxPrice={priceRange.max}
-            values={[priceRange.min, priceRange.max]}
-            spaces={10}
-            sticky
-            onChange={this.handleRangeInputChange}
-          />
-        </Row>
+          <>
+            <Row position="center">
+              <RangeInput
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                values={[priceRange.min, priceRange.max]}
+                spaces={10}
+                sticky
+                onChange={this.handleRangeInputChange}
+              />
+            </Row>
 
-        <Row direction="row" position="center">
-          <Column>
-            <input
-              type="text"
-              placeholder={priceRange.min}
-              className={styles['values-field']}
-              onChange={this.handleMinInputValueChange}
-            />
-          </Column>
-          <Column>
-            <input
-              type="text"
-              placeholder={priceRange.max}
-              className={styles['values-field']}
-              onChange={this.handleMaxInputValueChange}
-            />
-          </Column>
-        </Row>
+            <Row direction="row" position="center">
+              <Column>
+                <input
+                  type="text"
+                  placeholder={priceRange.min}
+                  className={styles['values-field']}
+                  onChange={this.handleMinInputValueChange}
+                />
+              </Column>
+              <Column>
+                <input
+                  type="text"
+                  placeholder={priceRange.max}
+                  className={styles['values-field']}
+                  onChange={this.handleMaxInputValueChange}
+                />
+              </Column>
+            </Row>
 
-        <Products items={items} />
-        < />
+            <Products items={items} />
+          </>
         )}
-      </>
+      </div>
     );
   }
 }

@@ -3,8 +3,7 @@ import RangeInput from './components/range-input';
 import { Products, fetchProducts } from './components/products';
 import { Row, Column } from './components/grid';
 import styles from './reset.scss';
-
-import * as AppUtilities from './components/utilities/app-utilities';
+import * as AppUtilities from './components/app-utilities/app-utilities';
 
 class App extends React.Component {
   constructor(props) {

@@ -4,7 +4,7 @@ import Bar from '../bar';
 import Scale from '../scale';
 import Tooltip from '../tooltip';
 import styles from './range-input.scss';
-import * as RangeUtilities from '../utilities/range-utilities';
+import * as RangeUtilities from './range-utilities';
 
 class RangeInput extends React.Component {
   constructor(props) {

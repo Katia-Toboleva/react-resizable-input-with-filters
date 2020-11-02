@@ -16,6 +16,8 @@ const getMaxPrice = (products) => {
   return maxPrice;
 };
 
+const convertPercentIntoNumber = (percent, totalNumber) => (percent * totalNumber) / 100;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -93,21 +95,13 @@ class App extends React.Component {
     return filteredProducts;
   }
 
-  calculateFullRangeValue(maxPrice, minPrice) {
-    return maxPrice - minPrice;
-  }
-
-  convertPercentIntoNumber(percent, totalNumber) {
-    return (percent * totalNumber) / 100;
-  }
-
   handleRangeInputChange(values) {
     const { products } = this.state;
     const minPrice = getMinPrice(products);
     const maxPrice = getMaxPrice(products);
-    const fullRangeValue = this.calculateFullRangeValue(maxPrice, minPrice);
-    const stepLeftValue = this.convertPercentIntoNumber(values.left, fullRangeValue);
-    const stepRightValue = this.convertPercentIntoNumber(values.right, fullRangeValue);
+    const fullRangeValue = maxPrice - minPrice;
+    const stepLeftValue = convertPercentIntoNumber(values.left, fullRangeValue);
+    const stepRightValue = convertPercentIntoNumber(values.right, fullRangeValue);
 
     this.setState({
       priceRange: {

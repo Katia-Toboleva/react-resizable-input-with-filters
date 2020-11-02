@@ -18,6 +18,18 @@ const getMaxPrice = (products) => {
 
 const convertPercentIntoNumber = (percent, totalNumber) => (percent * totalNumber) / 100;
 
+const filteredProducts = (priceRange, products) => (
+  products.filter(product => (product.price >= priceRange.min && product.price <= priceRange.max))
+);
+
+const getItems = (priceRange, products) => {
+  if (!priceRange || !priceRange.min || !priceRange.max) {
+    return products;
+  }
+
+  return filteredProducts(priceRange, products);
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -73,30 +85,6 @@ class App extends React.Component {
 
   // Events===================================
 
-  getItems() {
-    const { priceRange, products } = this.state;
-
-    if (!priceRange || !priceRange.min || !priceRange.max) {
-      return products;
-    }
-
-    return this.filteredProducts();
-  }
-
-  filteredProducts() {
-    const { priceRange, products } = this.state;
-
-    const filteredProducts = products.filter((product) => {
-      if (product.price >= priceRange.min && product.price <= priceRange.max) {
-        return product;
-      }
-
-      return false;
-    });
-
-    return filteredProducts;
-  }
-
   handleRangeInputChange(values) {
     const { products } = this.state;
     const minPrice = getMinPrice(products);
@@ -124,15 +112,15 @@ class App extends React.Component {
     if (Number(value) >= minPrice && Number(value) <= Number(priceRange.max)) {
       newState = {
         priceRange: {
+          ...priceRange,
           min: Number(value),
-          max: priceRange.max,
         },
-        displayMinInputValue: Number(value),
+        displayMinInputValue: value,
       };
     } else {
       newState = {
         ...priceRange,
-        displayMinInputValue: Number(value),
+        displayMinInputValue: value,
       };
     }
 
@@ -148,15 +136,15 @@ class App extends React.Component {
     if (Number(value) <= maxPrice && Number(value) >= Number(priceRange.min)) {
       newState = {
         priceRange: {
-          min: priceRange.min,
+          ...priceRange,
           max: Number(value),
         },
-        displayMaxInputValue: Number(value),
+        displayMaxInputValue: value,
       };
     } else {
       newState = {
         ...priceRange,
-        displayMaxInputValue: Number(value),
+        displayMaxInputValue: value,
       };
     }
 
@@ -175,7 +163,7 @@ class App extends React.Component {
     } = this.state;
     const minPrice = getMinPrice(products);
     const maxPrice = getMaxPrice(products);
-    const items = this.getItems();
+    const items = getItems(priceRange, products);
 
     return (
       <div>

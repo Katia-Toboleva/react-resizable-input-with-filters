@@ -4,31 +4,7 @@ import { Products, fetchProducts } from './components/products';
 import { Row, Column } from './components/grid';
 import styles from './reset.scss';
 
-const getMinPrice = (products) => {
-  const minPrice = Math.min(...products.map((item) => item.price));
-
-  return minPrice;
-};
-
-const getMaxPrice = (products) => {
-  const maxPrice = Math.max(...products.map((item) => item.price));
-
-  return maxPrice;
-};
-
-const convertPercentIntoNumber = (percent, totalNumber) => (percent * totalNumber) / 100;
-
-const filteredProducts = (priceRange, products) => (
-  products.filter(product => (product.price >= priceRange.min && product.price <= priceRange.max))
-);
-
-const getItems = (priceRange, products) => {
-  if (!priceRange || !priceRange.min || !priceRange.max) {
-    return products;
-  }
-
-  return filteredProducts(priceRange, products);
-};
+import * as AppUtilities from './components/utilities/app-utilities';
 
 class App extends React.Component {
   constructor(props) {
@@ -59,11 +35,11 @@ class App extends React.Component {
       products,
       fetchProductsRequestStatus: 'success',
       priceRange: {
-        min: getMinPrice(products),
-        max: getMaxPrice(products),
+        min: AppUtilities.getMinPrice(products),
+        max: AppUtilities.getMaxPrice(products),
       },
-      displayMinInputValue: getMinPrice(products),
-      displayMaxInputValue: getMaxPrice(products),
+      displayMinInputValue: AppUtilities.getMinPrice(products),
+      displayMaxInputValue: AppUtilities.getMaxPrice(products),
     });
   }
 
@@ -87,11 +63,11 @@ class App extends React.Component {
 
   handleRangeInputChange(values) {
     const { products } = this.state;
-    const minPrice = getMinPrice(products);
-    const maxPrice = getMaxPrice(products);
+    const minPrice = AppUtilities.getMinPrice(products);
+    const maxPrice = AppUtilities.getMaxPrice(products);
     const fullRangeValue = maxPrice - minPrice;
-    const stepLeftValue = convertPercentIntoNumber(values.left, fullRangeValue);
-    const stepRightValue = convertPercentIntoNumber(values.right, fullRangeValue);
+    const stepLeftValue = AppUtilities.convertPercentIntoNumber(values.left, fullRangeValue);
+    const stepRightValue = AppUtilities.convertPercentIntoNumber(values.right, fullRangeValue);
 
     this.setState({
       priceRange: {
@@ -106,7 +82,7 @@ class App extends React.Component {
   handleMinInputValueChange(event) {
     const { products, priceRange } = this.state;
     const { value } = event.currentTarget;
-    const minPrice = getMinPrice(products);
+    const minPrice = AppUtilities.getMinPrice(products);
     let newState = {};
 
     if (Number(value) >= minPrice && Number(value) <= Number(priceRange.max)) {
@@ -130,7 +106,7 @@ class App extends React.Component {
   handleMaxInputValueChange(event) {
     const { products, priceRange } = this.state;
     const { value } = event.currentTarget;
-    const maxPrice = getMaxPrice(products);
+    const maxPrice = AppUtilities.getMaxPrice(products);
     let newState = {};
 
     if (Number(value) <= maxPrice && Number(value) >= Number(priceRange.min)) {
@@ -161,9 +137,9 @@ class App extends React.Component {
       displayMinInputValue,
       displayMaxInputValue,
     } = this.state;
-    const minPrice = getMinPrice(products);
-    const maxPrice = getMaxPrice(products);
-    const items = getItems(priceRange, products);
+    const minPrice = AppUtilities.getMinPrice(products);
+    const maxPrice = AppUtilities.getMaxPrice(products);
+    const items = AppUtilities.getItems(priceRange, products);
 
     return (
       <div>

@@ -50,6 +50,8 @@ class App extends React.Component {
         min: getMinPrice(products),
         max: getMaxPrice(products),
       },
+      displayMinInputValue: getMinPrice(products),
+      displayMaxInputValue: getMaxPrice(products),
     });
   }
 
@@ -108,6 +110,8 @@ class App extends React.Component {
         min: minPrice + stepLeftValue,
         max: maxPrice - stepRightValue,
       },
+      displayMinInputValue: minPrice + stepLeftValue,
+      displayMaxInputValue: maxPrice - stepRightValue,
     });
   }
 
@@ -115,48 +119,60 @@ class App extends React.Component {
     const { products, priceRange } = this.state;
     const { value } = event.currentTarget;
     const minPrice = getMinPrice(products);
+    let newState = {};
 
-    if (Number(value) < minPrice) {
-      return;
+    if (Number(value) >= minPrice && Number(value) <= Number(priceRange.max)) {
+      newState = {
+        priceRange: {
+          min: Number(value),
+          max: priceRange.max,
+        },
+        displayMinInputValue: Number(value),
+      };
+    } else {
+      newState = {
+        ...priceRange,
+        displayMinInputValue: Number(value),
+      };
     }
 
-    if (priceRange.max !== '' && Number(value) > Number(priceRange.max)) {
-      return;
-    }
-
-    this.setState({
-      priceRange: {
-        min: Number(value),
-        max: priceRange.max,
-      },
-    });
+    this.setState(newState);
   }
 
   handleMaxInputValueChange(event) {
     const { products, priceRange } = this.state;
     const { value } = event.currentTarget;
     const maxPrice = getMaxPrice(products);
+    let newState = {};
 
-    if (Number(value) > maxPrice) {
-      return;
+    if (Number(value) <= maxPrice && Number(value) >= Number(priceRange.min)) {
+      newState = {
+        priceRange: {
+          min: priceRange.min,
+          max: Number(value),
+        },
+        displayMaxInputValue: Number(value),
+      };
+    } else {
+      newState = {
+        ...priceRange,
+        displayMaxInputValue: Number(value),
+      };
     }
 
-    if (priceRange.min !== '' && Number(value) < Number(priceRange.min)) {
-      return;
-    }
-
-    this.setState({
-      priceRange: {
-        min: priceRange.min,
-        max: Number(value),
-      },
-    });
+    this.setState(newState);
   }
 
   render() {
     console.log('state of App', this.state);
 
-    const { priceRange, products, fetchProductsRequestStatus } = this.state;
+    const {
+      priceRange,
+      products,
+      fetchProductsRequestStatus,
+      displayMinInputValue,
+      displayMaxInputValue,
+    } = this.state;
     const minPrice = getMinPrice(products);
     const maxPrice = getMaxPrice(products);
     const items = this.getItems();
@@ -184,7 +200,7 @@ class App extends React.Component {
               <Column>
                 <input
                   type="text"
-                  placeholder={priceRange.min}
+                  value={displayMinInputValue}
                   className={styles['values-field']}
                   onChange={this.handleMinInputValueChange}
                 />
@@ -192,7 +208,7 @@ class App extends React.Component {
               <Column>
                 <input
                   type="text"
-                  placeholder={priceRange.max}
+                  value={displayMaxInputValue}
                   className={styles['values-field']}
                   onChange={this.handleMaxInputValueChange}
                 />

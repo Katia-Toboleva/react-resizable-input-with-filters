@@ -61,4 +61,18 @@ describe('RangeUtilities', () => {
       });
     });
   });
+
+  describe('calculatePercentage', () => {
+    describe('when called', () => {
+      it('should return correct value', () => {
+        const value = 200;
+        const width = 1000;
+
+        const expected = RangeUtilities.calculatePercentage(value, width);
+        const received = 20;
+
+        expect(received).toEqual(expected);
+      });
+    });
+  });
 });

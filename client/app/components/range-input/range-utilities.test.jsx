@@ -1,6 +1,3 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
-// import RangeInput from './range-input';
 import * as RangeUtilities from './range-utilities';
 
 describe('RangeUtilities', () => {

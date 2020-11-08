@@ -4,34 +4,7 @@ import Bar from '../bar';
 import Scale from '../scale';
 import Tooltip from '../tooltip';
 import styles from './range-input.scss';
-
-const getCoordinates = (props) => {
-  const { minPrice, maxPrice, values } = props;
-
-  if (!values) {
-    return {};
-  }
-
-  const [left, right] = values;
-
-  const fullRangeValue = maxPrice - minPrice;
-  const leftPercent = ((left - minPrice) * 100) / fullRangeValue;
-  const rightPercent = ((maxPrice - right) * 100) / fullRangeValue;
-  const widthPercent = 100 - (leftPercent + rightPercent);
-
-  return {
-    left: leftPercent,
-    right: rightPercent,
-    width: widthPercent,
-  };
-};
-
-const getMagnetValue = (percentage, spaces) => {
-  const step = 100 / spaces;
-  const magnetValue = (Math.round(percentage / step)) * step;
-
-  return magnetValue;
-};
+import * as RangeUtilities from './range-utilities';
 
 class RangeInput extends React.Component {
   constructor(props) {
@@ -59,15 +32,15 @@ class RangeInput extends React.Component {
   // // =====================================
   static getDerivedStateFromProps(props, state) {
     const { values, sticky, spaces } = props;
-    const { left, right, width } = getCoordinates(props);
+    const { left, right, width } = RangeUtilities.getCoordinates(props);
 
     const haveCoordinatesChanged = (
       left !== state.left ||
       right !== state.right
     );
 
-    const newLeft = sticky ? getMagnetValue(left, spaces) : left;
-    const newRight = sticky ? getMagnetValue(right, spaces) : right;
+    const newLeft = sticky ? RangeUtilities.getMagnetValue(left, spaces) : left;
+    const newRight = sticky ? RangeUtilities.getMagnetValue(right, spaces) : right;
     const newWidth = sticky ? (100 - (newLeft + newRight)) : width;
 
     if (
@@ -88,10 +61,6 @@ class RangeInput extends React.Component {
 
   // Events
   // ===================================
-
-  calculatePercentage(value, width) {
-    return (value * 100) / (width);
-  }
 
   handleMouseUp() {
     const { type, left } = this.state;
@@ -138,8 +107,8 @@ class RangeInput extends React.Component {
     const { sticky, spaces } = this.props;
     const { width, left } = this.inputRangeRef.current.getBoundingClientRect();
     const value = event.clientX - left;
-    const percentage = this.calculatePercentage(value, width);
-    const magnetValue = getMagnetValue(percentage, spaces);
+    const percentage = RangeUtilities.calculatePercentage(value, width);
+    const magnetValue = RangeUtilities.getMagnetValue(percentage, spaces);
 
     const newLeft = sticky ? magnetValue : percentage;
 
@@ -164,8 +133,8 @@ class RangeInput extends React.Component {
     const { sticky, spaces } = this.props;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const value = (event.clientX - (bounds.left + bounds.width)) * -1;
-    const percentage = this.calculatePercentage(value, bounds.width);
-    const magnetValue = getMagnetValue(percentage, spaces);
+    const percentage = RangeUtilities.calculatePercentage(value, bounds.width);
+    const magnetValue = RangeUtilities.getMagnetValue(percentage, spaces);
 
     const newRight = sticky ? magnetValue : percentage;
 

@@ -2,7 +2,9 @@ import React from 'react';
 import Toggle from '../toggle';
 import Bar from '../bar';
 import Scale from '../scale';
+import Tooltip from '../tooltip';
 import styles from './range-input.scss';
+import * as RangeUtilities from './range-utilities';
 
 class RangeInput extends React.Component {
   constructor(props) {
@@ -26,26 +28,39 @@ class RangeInput extends React.Component {
     this.handleBarMouseDown = this.handleBarMouseDown.bind(this);
   }
 
+  // Lifecycle
+  // // =====================================
+  static getDerivedStateFromProps(props, state) {
+    const { values, sticky, spaces } = props;
+    const { left, right, width } = RangeUtilities.getCoordinates(props);
+
+    const haveCoordinatesChanged = (
+      left !== state.left ||
+      right !== state.right
+    );
+
+    const newLeft = sticky ? RangeUtilities.getMagnetValue(left, spaces) : left;
+    const newRight = sticky ? RangeUtilities.getMagnetValue(right, spaces) : right;
+    const newWidth = sticky ? (100 - (newLeft + newRight)) : width;
+
+    if (
+      Array.isArray(values) &&
+      values.length &&
+      haveCoordinatesChanged &&
+      !state.isMouseActive
+    ) {
+      return {
+        left: newLeft,
+        right: newRight,
+        width: newWidth,
+      };
+    }
+
+    return null;
+  }
+
   // Events
   // ===================================
-
-  getPercentage() {
-    const { left, right } = this.state;
-    const selectedWidth = 100 - (left + right);
-    return selectedWidth;
-  }
-
-  getMagnetValue(percentage) {
-    const { spaces } = this.props;
-    const step = 100 / spaces;
-    const rounded = (Math.round(percentage / step)) * step;
-
-    return rounded;
-  }
-
-  calculatePercentage(value, width) {
-    return (value * 100) / (width);
-  }
 
   handleMouseUp() {
     const { type, left } = this.state;
@@ -89,11 +104,11 @@ class RangeInput extends React.Component {
 
   handleToggleLeftMove(event) {
     const { right } = this.state;
-    const { sticky } = this.props;
+    const { sticky, spaces } = this.props;
     const { width, left } = this.inputRangeRef.current.getBoundingClientRect();
     const value = event.clientX - left;
-    const percentage = this.calculatePercentage(value, width);
-    const magnetValue = this.getMagnetValue(percentage);
+    const percentage = RangeUtilities.calculatePercentage(value, width);
+    const magnetValue = RangeUtilities.getMagnetValue(percentage, spaces);
 
     const newLeft = sticky ? magnetValue : percentage;
 
@@ -108,18 +123,18 @@ class RangeInput extends React.Component {
     }
 
     this.setState({
-      left: newLeft,
-      width: 100 - (newLeft + right),
+      left: Math.round(newLeft),
+      width: Math.round(100 - (newLeft + right)),
     });
   }
 
   handleToggleRightMove(event) {
     const { left } = this.state;
-    const { sticky } = this.props;
+    const { sticky, spaces } = this.props;
     const bounds = this.inputRangeRef.current.getBoundingClientRect();
     const value = (event.clientX - (bounds.left + bounds.width)) * -1;
-    const percentage = this.calculatePercentage(value, bounds.width);
-    const magnetValue = this.getMagnetValue(percentage);
+    const percentage = RangeUtilities.calculatePercentage(value, bounds.width);
+    const magnetValue = RangeUtilities.getMagnetValue(percentage, spaces);
 
     const newRight = sticky ? magnetValue : percentage;
 
@@ -134,8 +149,8 @@ class RangeInput extends React.Component {
     }
 
     this.setState({
-      right: newRight,
-      width: 100 - (newRight + left),
+      right: Math.round(newRight),
+      width: Math.round(100 - (newRight + left)),
     });
   }
 
@@ -167,8 +182,8 @@ class RangeInput extends React.Component {
 
     this.setState({
       mouseDistance: newMouseDistance,
-      left: newLeftPosition,
-      right: newRightPosition,
+      left: Math.round(newLeftPosition),
+      right: Math.round(newRightPosition),
     });
   }
 
@@ -186,6 +201,7 @@ class RangeInput extends React.Component {
     const {
       isMouseActive, type, left, right,
     } = this.state;
+    const { onChange } = this.props;
 
     if (type !== 'bar') {
       this.handleToggleMove(event);
@@ -196,12 +212,11 @@ class RangeInput extends React.Component {
     }
 
     const values = {
-      left: Math.round(left),
-      right: Math.round(right),
-      percentage: Math.round(this.getPercentage()),
+      left,
+      right,
     };
 
-    this.props.onChange(values);
+    onChange(values);
   }
 
   handleBarMouseDown(type) {
@@ -220,24 +235,53 @@ class RangeInput extends React.Component {
   // Render
   // ===================================
   render() {
-    console.log(this.state);
-    const { left, right, width } = this.state;
-    const { spaces } = this.props;
+    // console.log('rendered state of Range:', this.state);
+
+    const {
+      left,
+      right,
+      width,
+      isMouseActive,
+      type,
+    } = this.state;
+
+    const {
+      spaces,
+      values,
+    } = this.props;
+
+    const [leftValue, rightValue] = values;
+
     return (
-      <div className={styles['range-input']} ref={this.inputRangeRef}>
-        <Bar left={left} right={right} type="bar" width={width} onMouseDown={this.handleBarMouseDown} />
-        <Toggle
-          left={left}
-          type="left"
-          onMouseDown={this.handleMouseDown}
-        />
-        <Toggle
-          right={right}
-          type="right"
-          onMouseDown={this.handleMouseDown}
-        />
-        <br />
-        <Scale spaces={spaces} />
+      <div className={styles['range-input-container']}>
+        <div className={styles['range-input']} ref={this.inputRangeRef}>
+          <Bar
+            left={left}
+            right={right}
+            type="bar"
+            width={width}
+            onMouseDown={this.handleBarMouseDown}
+          />
+
+          <Toggle
+            left={left}
+            type="left"
+            onMouseDown={this.handleMouseDown}
+          >
+            <Tooltip type="left" text={leftValue} active={isMouseActive && type !== 'right'} />
+          </Toggle>
+
+          <Toggle
+            right={right}
+            type="right"
+            onMouseDown={this.handleMouseDown}
+          >
+            <Tooltip type="right" text={rightValue} active={isMouseActive && type !== 'left'} />
+          </Toggle>
+          <br />
+          <Scale spaces={spaces} />
+          <br />
+        </div>
       </div>
     );
   }

@@ -127,8 +127,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log('state of App', this.state);
-
     const {
       priceRange,
       products,

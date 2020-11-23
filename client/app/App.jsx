@@ -2,6 +2,7 @@ import React from 'react';
 import RangeInput from './components/range-input';
 import { Products, fetchProducts } from './components/products';
 import { Row, Column } from './components/grid';
+import { Header } from './components/header';
 import styles from './reset.scss';
 import * as AppUtilities from './components/app-utilities/app-utilities';
 
@@ -146,6 +147,9 @@ class App extends React.Component {
 
         {fetchProductsRequestStatus === 'success' && products.length !== 0 && (
           <>
+            <Row>
+              <Header />
+            </Row>
             <Row position="center">
               <RangeInput
                 minPrice={minPrice}

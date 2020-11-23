@@ -1,20 +1,17 @@
 import React from 'react';
 import styles from './header.scss';
 import { Row, Column } from '../grid';
-import Button from '../button';
+import Navbar from '../navbar';
 import Logo from '../logo';
 
 const Header = () => (
   <div className={styles.header}>
     <Row direction="row">
-      <Column>
-        {/* <Navbar /> */}
-      </Column>
-      <Column grow >
+      <Column grow>
         <Logo />
       </Column>
-      <Column>
-        <Button text="sign in" type="sign-in" />
+      <Column shrink>
+        <Navbar />
       </Column>
     </Row>
   </div>

@@ -27,7 +27,7 @@ const products = [
   {
     name: 'Marlin Aldgate Tower Bridge',
     price: 93,
-    url: 'https://exp.cdn-hotels.com/hotels/29000000/28760000/28758100/28758089/789e750f_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
+    url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/8200/8161/96345523_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
     address: '58 Commercial Rd, Whitechapel, London E1 1LP',
   },
   {
@@ -43,27 +43,27 @@ const products = [
     address: '81 Jermyn Street, St Jamess, London, England, SW1Y 6JF',
   },
   {
-    name: 'The Chesterfield Mayfair',
+    name: 'The Soho Hotel',
     price: 160,
-    url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/2300/2276/48468c99_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
+    url: 'https://exp.cdn-hotels.com/hotels/2000000/1120000/1112700/1112611/e46915c7_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
     address: '35 Charles Street, London, England, W1J 5EB',
   },
   {
     name: 'The Zetter Townhouse Marylebone',
     price: 172,
-    url: 'https://exp.cdn-hotels.com/hotels/29000000/28760000/28758100/28758089/789e750f_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
+    url: 'https://exp.cdn-hotels.com/hotels/2000000/1050000/1050000/1049989/498683f1_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
     address: ' 28-30 Seymour St, Marylebone, London W1H 7JB',
   },
   {
     name: 'The Bloomsbury',
     price: 185,
     url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/2300/2276/ca632b05_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
-    address: '28-30 Seymour St, Marylebone, London W1H 7JB',
+    address: '86-88 Clerkenwell Road, London, England, EC1M 5RJ',
   },
   {
     name: 'Firmdale Hotel',
     price: 195,
-    url: 'https://exp.cdn-hotels.com/hotels/29000000/28760000/28758100/28758089/789e750f_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
+    url: 'https://exp.cdn-hotels.com/hotels/2000000/1120000/1112700/1112611/2cb94b21_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
     address: '15-17 Charlotte St, Fitzrovia, London W1T 1RJ',
   },
   {
@@ -75,7 +75,7 @@ const products = [
   {
     name: 'Grand Residences by Marriott',
     price: 250,
-    url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/100/1/32995e71_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
+    url: 'https://exp.cdn-hotels.com/hotels/1000000/30000/23100/23016/edd44a92_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
     address: '47 Park St, Mayfair, London W1K 7EB',
   },
 ];

@@ -81,11 +81,11 @@ const products = [
 ];
 
 const fetchProducts = () => {
-  const delay = Math.floor(Math.random() * 3000) + 1;
-  const failureRandomNumber = Math.floor(Math.random() * 10) + 1;
+  const delay = Math.floor(Math.random() * 2000) + 1;
+  const failureRandomNumber = Math.floor(Math.random() * 20) + 1;
 
   return new Promise((resolve, reject) => {
-    if (failureRandomNumber < 2) {
+    if (failureRandomNumber < 1) {
       reject();
 
       return;

@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './header.scss';
 import { Row, Column } from '../grid';
-import { Logo } from '../logo';
+import Logo from '../logo';
 
 const Header = () => (
   <div className={styles.header}>
-    <Row>
+    <Row row position="center">
       <Column>
         <Logo />
       </Column>

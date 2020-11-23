@@ -37,6 +37,18 @@ const products = [
     address: '35 Charles St, Mayfair, London W1J 5EB',
   },
   {
+    name: 'The Cavendish London',
+    price: 136,
+    url: 'https://exp.cdn-hotels.com/hotels/1000000/20000/13900/13891/fe5cb50b_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
+    address: '81 Jermyn Street, St Jamess, London, England, SW1Y 6JF',
+  },
+  {
+    name: 'The Chesterfield Mayfair',
+    price: 160,
+    url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/2300/2276/48468c99_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
+    address: '35 Charles Street, London, England, W1J 5EB',
+  },
+  {
     name: 'The Zetter Townhouse Marylebone',
     price: 172,
     url: 'https://exp.cdn-hotels.com/hotels/29000000/28760000/28758100/28758089/789e750f_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
@@ -53,6 +65,12 @@ const products = [
     price: 195,
     url: 'https://exp.cdn-hotels.com/hotels/29000000/28760000/28758100/28758089/789e750f_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
     address: '15-17 Charlotte St, Fitzrovia, London W1T 1RJ',
+  },
+  {
+    name: 'The Sumner',
+    price: 220,
+    url: 'https://exp.cdn-hotels.com/hotels/3000000/2550000/2542800/2542721/e8e46e75_b.jpg?impolicy=fcrop&w=773&h=530&q=high',
+    address: '54 Upper Berkeley Street, Marble Arch, London, England, W1H 7QR',
   },
   {
     name: 'Grand Residences by Marriott',

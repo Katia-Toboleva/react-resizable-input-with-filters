@@ -1,6 +1,12 @@
 .products {
   width: 60vw;
   margin: 20px auto;
+
+  &__price {
+    > :last-child {
+      margin-top: 17px;
+    }
+  }
 }
 
 .products-item {

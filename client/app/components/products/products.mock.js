@@ -33,7 +33,7 @@ const products = [
   {
     name: 'The Chesterfield Mayfair',
     price: 123,
-    url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/100/1/32995e71_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
+    url: 'https://exp.cdn-hotels.com/hotels/1000000/10000/2300/2276/48468c99_z.jpg?impolicy=fcrop&w=773&h=530&q=high',
     address: '35 Charles St, Mayfair, London W1J 5EB',
   },
   {

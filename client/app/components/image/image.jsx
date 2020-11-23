@@ -11,7 +11,7 @@ const Image = (props) => {
       [`image--size-${size}`]: size,
     })}
     >
-      <img src={String(url)} alt="hotel" />
+      <img src={String(url)} alt="" />
 
     </div>
   );

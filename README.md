@@ -5,7 +5,7 @@ The app mimics a hotel search engine with a price filter. First, all the hotel o
 **Note**: The range is currently set up with "sticky" values (e.g. 10 steps) but the functionality of the app allows to switch to "non-sticky" values (by deleting "sticky" props) to offer precise price options.
 
 ### Technologies: 
-React, JavaScript (JS mouse events), Async promises and fetch, Lifecycle events, TDD testing (Jest), GitHub branches, SCSS and CSS modules
+React, JavaScript (JS mouse events), Async promises and fetch, Lifecycle events, TDD testing (Jest), GitHub branches, SCSS and CSS modules.
 
 ### Demo:
 1. Getting started

@@ -1,6 +1,6 @@
-## React Hotel search engin with price filter(input range)
+## React Hotel search engine with price filter(input range)
 ### Description: 
-The app mimics a hotel search engin with a price filter. First, all the hotel options are fetched from a mock API. Then the user can filter the options by either moving toggles of the price range or changing values in the input fields. Any time the values are changed inputs, range input bar and filters are updated accordingly showing the hotels by the requested price range. It's also possible to move the bar to filter for a specific price range. 
+The app mimics a hotel search engine with a price filter. First, all the hotel options are fetched from a mock API. Then the user can filter the options by either moving toggles of the price range or changing values in the input fields. Any time the values are changed inputs, range input bar and filters are updated accordingly showing the hotels by the requested price range. It's also possible to move the bar to filter for a specific price range. 
 
 **Note**: The range is currently set up with "sticky" values (e.g. 10 steps) but the functionality of the app allows to switch to "non-sticky" values (by deleting "sticky" props) to offer precise price options.
 

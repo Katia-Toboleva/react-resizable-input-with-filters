@@ -9,7 +9,7 @@ The app mimics a hotel search engine with a price filter. First, all the hotel o
 React, JavaScript (JS mouse events), Async promises and fetch, Lifecycle events, TDD testing (Jest), GitHub branches, SCSS and CSS modules, Webpack, Babel, Eslint, Stylelint.
 
 ### Demo:
-1. Getting started:
+1.Getting started:
 
 ![range-input-1](https://user-images.githubusercontent.com/66952678/100886145-61375400-34ab-11eb-9667-a409cdca8f3f.gif)
 
